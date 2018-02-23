@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/IAV_Template.unity
-  isLoaded: 1
-  isActive: 1
