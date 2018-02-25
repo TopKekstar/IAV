@@ -39,9 +39,14 @@ public class GameManager : MonoBehaviour {
 		
 	}
 	void updateScene(){
-		
+
 	
 	}
+    bool canMoveTile(int x_ini, int y_ini, int x_dest, int y_dest)
+    {
+        if (map[x_dest, y_dest]._ID != -1) return false;
+        else return true;
+    }
 
 
 	mapTile [,] getMap(){
@@ -57,4 +62,21 @@ public class GameManager : MonoBehaviour {
 					}
 			}
 	}
+
+    bool checkFinished()
+    {
+        bool ordered = true;
+        for(int i = 0; i < 3 && ordered; i++)
+        {
+            for(int j = 0; j < 3&& ordered; j++)
+            {
+                if (i * 3 + j != 9)
+                    ordered = (map[i, j]._ID != i * 3 + j);
+                else ordered = (map[i, j]._ID == -1);
+            }
+        }
+        
+        return ordered;
+
+    }
 }

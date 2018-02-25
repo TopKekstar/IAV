@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114921060701932270}
   - component: {fileID: 114920064433711084}
   m_Layer: 0
-  m_Name: New Prefab
+  m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d0d9a316e63b674491f878f22ad7727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nTile: 0
 --- !u!114 &114921060701932270
 MonoBehaviour:
   m_ObjectHideFlags: 1
