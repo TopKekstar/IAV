@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 /*
- *https://picoledelimao.github.io/blog/2015/12/06/solving-the-sliding-puzzle/ 
+ *
+ * https://picoledelimao.github.io/blog/2015/12/06/solving-the-sliding-puzzle/ 
  * */
 
 public class Puzzle : MonoBehaviour {
@@ -238,10 +239,7 @@ public class Puzzle : MonoBehaviour {
                     stack.Push(list[i]);
                 }
             }
-
         }
-
-
     }
 }
 

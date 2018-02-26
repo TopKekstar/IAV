@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour  {
 	public int nTile;
-	public GameManager _gm;
 	public int index;
 	uint x, y;
 
@@ -18,17 +17,23 @@ public class Tile : MonoBehaviour  {
 		
 	}
 
-	public void init(int n,int ind, ref GameManager gm){
+	public void init(int n,int ind){
 		nTile = n;
-		_gm = gm;
 		index = ind;
 		if (n == 0) {
-			gameObject.SetActive (false);
+            GetComponent<UnityEngine.UI.Image>().color = new Color(0,0,0,0);
 		}
 		GetComponentInChildren<UnityEngine.UI.Text>().text = nTile.ToString ();
 	}
 
-	void OnMouseDown(){
-		Debug.Log ("suu");
-	}
+   public void OnClick()
+    {
+        int cambio;
+        if( GameManager.instance.canMove(index, out cambio))
+        {
+            GameManager.instance.move(index, cambio);
+        }
+    }
+
+    
 }
