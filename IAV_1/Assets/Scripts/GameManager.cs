@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	public int dimensiones;
     public static GameManager instance;
     int[,] tablero;
+    int[,] tSol;
     int lastMov;
 	// Use this for initialization
 	void Start () {
@@ -16,11 +17,22 @@ public class GameManager : MonoBehaviour {
         setIni();
 
 
-        /*for (int i = 0; i < 9; i++) {
-			GameObject g = Instantiate (prefabTile);
-			g.name = (i + 1).ToString ();
-			g.transform.SetParent(_canvas.transform);
-		}*/
+        
+    }
+
+    int[,] copiarTablero(ref int [,] t)
+    {
+        int[,] tc = new int[dimensiones, dimensiones];
+        for (int i = 0; i < dimensiones; i++)
+        {
+            for (int j = 0; j < dimensiones; j++)
+            {
+                tc[i, j] = t[i, j];
+
+            }
+        }
+        return tc;
+
     }
 
     public bool canMove(int index, out int cambio)
@@ -96,6 +108,7 @@ public class GameManager : MonoBehaviour {
                 
             }
         }
+        tSol = copiarTablero(ref tablero);
         construir();
 
     }
@@ -156,14 +169,14 @@ public class GameManager : MonoBehaviour {
             List<int> list = movsDisponibles(ref tablero);
             int kek = list[Random.Range(0, list.Count)];
             int i1, j1, i2, j2;
-            getIJ(0, out i1, out j1);
-            getIJ(kek, out i2, out j2);
-            swap(i1, j1, i2, j2);
+            getIJ(0, out i1, out j1, ref tablero);
+            getIJ(kek, out i2, out j2, ref tablero);
+            swap(i1, j1, i2, j2,ref tablero);
         }
         construir();
     }
 
-    void getIJ(int id,out int ic, out int jc)
+    void getIJ(int id,out int ic, out int jc, ref int [,] t)
     {
         bool flag=true;
         ic = 0;
@@ -172,7 +185,7 @@ public class GameManager : MonoBehaviour {
         {
             for (int j = 0; j < dimensiones&&flag; j++)
             {
-                if (tablero[i, j] == id)
+                if (t[i, j] == id)
                 {
                     flag = false;
                     ic = i;
@@ -197,18 +210,20 @@ public class GameManager : MonoBehaviour {
         t1.GetComponent<Tile>().index = i2;
         t2.GetComponent<Tile>().index = i1;
 
-        swap(l1, c1, l2, c2);
+        swap(l1, c1, l2, c2,ref tablero);
         t1.SetSiblingIndex(i2);
         t2.SetSiblingIndex(i1);
 
     }
 
-    void swap(int i1, int j1,int i2, int j2)
+    void swap(int i1, int j1,int i2, int j2, ref int [,] t)
     {
-        int temp = tablero[i1, j1];
-        tablero[i1, j1] = tablero[ i2, j2];
-        tablero[i2, j2] = temp;
+        int temp = t[i1, j1];
+        t[i1, j1] = t[ i2, j2];
+        t[i2, j2] = temp;
     }
+
+    
 
 
     // Update is called once per frame
@@ -219,9 +234,25 @@ public class GameManager : MonoBehaviour {
 
 	
 	}
-    void BFS()
-    {
 
+    bool comparaTableros(ref int[,] t1, ref int[,] t2)
+    {
+        bool flag = true;
+        for (int i = 0; i < dimensiones && flag; i++)
+        {
+            for (int j = 0; j < dimensiones && flag; j++)
+            {
+                if (t1[i, j] != t2[i, j])
+                    flag = false;
+            }
+        }
+        return flag;
+    }
+
+    bool solucion(ref int[,] t)
+    {
+        
+        return comparaTableros(ref t,ref tSol);
     }
 
     List<int[,]> visita(ref int[,] t)
@@ -231,34 +262,67 @@ public class GameManager : MonoBehaviour {
         for (int i = 0; i < movs.Count; i++)
         {
             int m = movs[i];
-            if(m != lastMov)
+            if (m != lastMov)
             {
-                int[,] ite = t;
-
+                int[,] ite = copiarTablero(ref t);
+                int ir, jr, ih, jh;
+                getIJ(m, out ir, out jr, ref ite);
+                getIJ(0, out ih, out jh, ref ite);
+                swap(ir, jr, ih, jh, ref ite);
+                iter.Add(ite);
             }
         }
         return iter;
 
     }
-    bool solucion()
+    
+    public void BFS()
     {
-        for (int i = 0; i < dimensiones; i++)
-        {
-            for (int j = 0; j < dimensiones; j++)
-            {
-                int piece = tablero[i, j];
-                
-                if (piece != 0)
-                {
 
-                    int originalLine = piece - 1 / dimensiones;
-                    int originalColumn = (piece - 1) % dimensiones;
-                    if (i != originalLine || j != originalColumn) return false;
+        int[,] inicial = copiarTablero(ref tablero);
+        Debug.Log("comienza");
+        List<int[,]> stack = new List<int[,]>();
+        stack.Add(inicial);
+        int k = 1;
+        bool flag = true;
+        while (stack.Count > 0&&flag)
+        {
+            Debug.Log(k);
+            k++;
+            int[,] top = stack[0];
+            stack.RemoveAt(0);
+            if (solucion(ref top)||k > 100)
+            {
+
+                tablero = copiarTablero(ref top);
+
+
+              
+                flag = false;
+            }
+            else
+            {
+
+
+
+                List<int[,]> list = visita(ref top);
+                for (int i = 0; i < list.Count; i++)
+                {
+                    for (int j = 0; j < stack.Count; j++)
+                    {
+
+                    }
                 }
             }
+            
         }
-        return true;
+        construir();
     }
 
-
 }
+
+    
+    
+
+
+
