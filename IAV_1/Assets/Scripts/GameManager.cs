@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     int[,] tablero;
     int[,] tSol;
+   
     int lastMov;
 	// Use this for initialization
 	void Start () {
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    int[,] copiarTablero(ref int [,] t)
+    protected int[,] copiarTablero(ref int [,] t)
     {
         int[,] tc = new int[dimensiones, dimensiones];
         for (int i = 0; i < dimensiones; i++)
@@ -142,7 +143,7 @@ public class GameManager : MonoBehaviour {
         }
 
     }
-
+    
     public List<int> movsDisponibles(ref int[,] t)
     {
         List<int> listaMovs = new List<int>();
@@ -235,7 +236,18 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    bool comparaTableros(ref int[,] t1, ref int[,] t2)
+    protected struct State
+    {
+        public void ini(List<int> l, int[,] t)
+        {
+            c = new List<int>(l);
+            _t = t;
+        }
+        public List<int> c;
+        public int[,] _t;
+    }
+
+     bool comparaTableros( int[,] t1,  int[,] t2)
     {
         bool flag = true;
         for (int i = 0; i < dimensiones && flag; i++)
@@ -249,27 +261,30 @@ public class GameManager : MonoBehaviour {
         return flag;
     }
 
-    bool solucion(ref int[,] t)
+    bool solucion( int[,] t)
     {
         
-        return comparaTableros(ref t,ref tSol);
+        return comparaTableros( t, tSol);
     }
 
-    List<int[,]> visita(ref int[,] t)
+    List<State> visita(ref State t)
     {
-        List<int[,]> iter = new List<int[,]>();
-        List<int> movs = movsDisponibles(ref t);
+        List<State> iter = new List<State>();
+        List<int> movs = movsDisponibles(ref t._t);
         for (int i = 0; i < movs.Count; i++)
         {
             int m = movs[i];
             if (m != lastMov)
             {
-                int[,] ite = copiarTablero(ref t);
+                int[,] ite = copiarTablero(ref t._t);
                 int ir, jr, ih, jh;
                 getIJ(m, out ir, out jr, ref ite);
                 getIJ(0, out ih, out jh, ref ite);
                 swap(ir, jr, ih, jh, ref ite);
-                iter.Add(ite);
+                State st = new State();
+                st.ini(t.c, ite);
+                st.c.Add(m);
+                iter.Add(st);
             }
         }
         return iter;
@@ -280,24 +295,21 @@ public class GameManager : MonoBehaviour {
     {
 
         int[,] inicial = copiarTablero(ref tablero);
-        Debug.Log("comienza");
-        List<int[,]> stack = new List<int[,]>();
-        stack.Add(inicial);
-        int k = 1;
+        List<State> stack = new List<State>();
+        State iniS = new State();
+        iniS.ini(new List<int>(),inicial);
+        stack.Add(iniS);
+        
         bool flag = true;
         while (stack.Count > 0&&flag)
         {
-            Debug.Log(k);
-            k++;
-            int[,] top = stack[0];
+           
+            State top = (State)stack[0];
             stack.RemoveAt(0);
-            if (solucion(ref top)||k > 100)
+            if (solucion( top._t))
             {
-
-                tablero = copiarTablero(ref top);
-
-
-              
+                Debug.Log(top.c.Count);
+                tablero = copiarTablero(ref top._t);
                 flag = false;
             }
             else
@@ -305,13 +317,19 @@ public class GameManager : MonoBehaviour {
 
 
 
-                List<int[,]> list = visita(ref top);
-                for (int i = 0; i < list.Count; i++)
+                List<State> list = visita(ref top);
+                foreach (var item in list)
                 {
-                    for (int j = 0; j < stack.Count; j++)
+                    bool meter = true;
+                    foreach (var st in stack)
                     {
+                        if (comparaTableros(st._t, item._t))
+                            meter = false;
 
                     }
+                    if (meter)
+                        stack.Add(item);
+
                 }
             }
             
