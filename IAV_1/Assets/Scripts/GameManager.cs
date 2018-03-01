@@ -3,13 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-	public Canvas _canvas;
+    protected struct State
+    {
+        public void ini(List<int> l, int[,] t)
+        {
+            c = new List<int>(l);
+            _t = t;
+            cantidadDesorden = 0;
+        }
+        public List<int> c;
+        public int[,] _t;
+        public int cantidadDesorden;
+    }
+    List<int> movimientos;
+    float tiempoNecesitado;
+
+    public Canvas _canvas;
 	public GameObject prefabTile;
+    public UnityEngine.UI.Text HUDTiempo;
+    public UnityEngine.UI.Text HUDPasos;
     int ultimoMov;
 	public int dimensiones;
     public static GameManager instance;
     int[,] tablero;
     int[,] tSol;
+
    
     int lastMov;
 	// Use this for initialization
@@ -236,16 +254,22 @@ public class GameManager : MonoBehaviour {
 	
 	}
 
-    protected struct State
+    void mostrarSolucion()
     {
-        public void ini(List<int> l, int[,] t)
+        if (movimientos.Count > 0)
         {
-            c = new List<int>(l);
-            _t = t;
+            int ir, jr, ih, jh;
+            getIJ(movimientos[0], out ir, out jr, ref tablero);
+            getIJ(0, out ih, out jh, ref tablero);
+            movimientos.RemoveAt(0);
+            swap(ir, jr, ih, jh, ref tablero);
+            construir();
+            Invoke("mostrarSolucion", 0.5f);
+
         }
-        public List<int> c;
-        public int[,] _t;
     }
+
+    
 
      bool comparaTableros( int[,] t1,  int[,] t2)
     {
@@ -265,6 +289,40 @@ public class GameManager : MonoBehaviour {
     {
         
         return comparaTableros( t, tSol);
+    }
+
+    int calcularDesorden(ref int[,] t)
+    {
+        int desorden = 0;
+        for (int i = 0; i < dimensiones ; i++)
+        {
+            for (int j = 0; j < dimensiones; j++)
+            {
+                if (t[i, j] != 0 && t[i, j] != tSol[i, j])
+                    desorden++;
+            }
+        }
+        return desorden;
+
+    }
+    int calcularDistancia(ref int[,] t)
+    {
+        int distancia = 0;
+        for (int i = 0; i < dimensiones; i++)
+        {
+            for (int j = 0; j < dimensiones; j++)
+            {
+                if (t[i, j] != 0)
+                {
+                    int lineaOriginal = (t[i, j]-1) / dimensiones;
+                    int columnaOriginal = (t[i, j] - 1) % dimensiones;
+                    distancia += System.Math.Abs(i - lineaOriginal) + System.Math.Abs(j - columnaOriginal);
+                }
+                    
+            }
+        }
+        return distancia;
+
     }
 
     List<State> visita(ref State t)
@@ -293,7 +351,7 @@ public class GameManager : MonoBehaviour {
     
     public void BFS()
     {
-
+        float tini = Time.deltaTime;
         int[,] inicial = copiarTablero(ref tablero);
         List<State> stack = new List<State>();
         State iniS = new State();
@@ -308,8 +366,88 @@ public class GameManager : MonoBehaviour {
             stack.RemoveAt(0);
             if (solucion( top._t))
             {
-                Debug.Log(top.c.Count);
-                tablero = copiarTablero(ref top._t);
+
+                movimientos = top.c;
+                flag = false;
+            }
+            else
+            {
+                List<State> list = visita(ref top);
+                int limite = stack.Count;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    bool meter = true;
+                    for (int j = 0; j < limite; j++)
+                    {
+                        if (comparaTableros(stack[j]._t, list[i]._t))
+                        {
+                            if (stack[j].c.Count > list[i].c.Count)
+                                stack[j] = list[i];
+                            else
+                                meter = false;
+                        }
+                    }
+                    if (meter)
+                    {
+                        stack.Add(list[i]);
+                    }
+
+                }
+        }
+            
+        }
+        tiempoNecesitado = Time.deltaTime- tini;
+        HUDTiempo.text = tiempoNecesitado.ToString() + " ms";
+        mostrarSolucion();
+    }
+
+    List<State> visitaH(ref State t)
+    {
+        List<State> iter = new List<State>();
+        List<int> movs = movsDisponibles(ref t._t);
+        for (int i = 0; i < movs.Count; i++)
+        {
+            int m = movs[i];
+            if (m != lastMov)
+            {
+                int[,] ite = copiarTablero(ref t._t);
+                int ir, jr, ih, jh;
+                getIJ(m, out ir, out jr, ref ite);
+                getIJ(0, out ih, out jh, ref ite);
+                swap(ir, jr, ih, jh, ref ite);
+                State st = new State();
+                st.ini(t.c, ite);
+                st.cantidadDesorden = calcularDesorden(ref st._t);
+                if (st.cantidadDesorden <= t.cantidadDesorden)
+                {
+                    st.c.Add(m);
+                    iter.Add(st);
+                }
+            }
+        }
+        return iter;
+
+    }
+
+    public void hamill()
+    {
+        float tini = Time.deltaTime;
+        int[,] inicial = copiarTablero(ref tablero);
+        List<State> stack = new List<State>();
+        State iniS = new State();
+        iniS.ini(new List<int>(), inicial);
+        iniS.cantidadDesorden = calcularDesorden(ref iniS._t);
+        stack.Add(iniS);
+        bool flag = true;
+        while (stack.Count > 0 && flag)
+        {
+
+            State top = (State)stack[0];
+            stack.RemoveAt(0);
+            if (solucion(top._t))
+            {
+
+                movimientos = top.c;
                 flag = false;
             }
             else
@@ -317,27 +455,127 @@ public class GameManager : MonoBehaviour {
 
 
 
-                List<State> list = visita(ref top);
-                foreach (var item in list)
+                List<State> list = visitaH(ref top);
+                int limite = stack.Count;
+                for (int i = 0; i < list.Count; i++)
                 {
                     bool meter = true;
-                    foreach (var st in stack)
+                    for (int j = 0; j < limite; j++)
                     {
-                        if (comparaTableros(st._t, item._t))
-                            meter = false;
-
+                        if (comparaTableros(stack[j]._t, list[i]._t))
+                        {
+                            if (stack[j].c.Count > list[i].c.Count)
+                                stack[j] = list[i];
+                            else
+                                meter = false;
+                        }
                     }
                     if (meter)
-                        stack.Add(item);
+                    {
+                        stack.Add(list[i]);
+                    }
 
                 }
+                Debug.Log(stack.Count);
             }
-            
+
         }
-        construir();
+        tiempoNecesitado = Time.deltaTime - tini;
+        HUDTiempo.text = tiempoNecesitado.ToString() + " ms";
+        mostrarSolucion();
     }
 
+    List<State> visitaM(ref State t)
+    {
+        float tini = Time.time;
+        List<State> iter = new List<State>();
+        List<int> movs = movsDisponibles(ref t._t);
+        for (int i = 0; i < movs.Count; i++)
+        {
+            int m = movs[i];
+            if (m != lastMov)
+            {
+                int[,] ite = copiarTablero(ref t._t);
+                int ir, jr, ih, jh;
+                getIJ(m, out ir, out jr, ref ite);
+                getIJ(0, out ih, out jh, ref ite);
+                swap(ir, jr, ih, jh, ref ite);
+                State st = new State();
+                st.ini(t.c, ite);
+                st.cantidadDesorden = calcularDistancia(ref st._t);
+                if (st.cantidadDesorden <= t.cantidadDesorden)
+                {
+                    st.c.Add(m);
+                    iter.Add(st);
+                }
+            }
+        }
+        return iter;
+
+    }
+
+    public void manhattan() {
+        float tini = Time.deltaTime;
+        int[,] inicial = copiarTablero(ref tablero);
+        List<State> stack = new List<State>();
+        State iniS = new State();
+        iniS.ini(new List<int>(), inicial);
+        iniS.cantidadDesorden = calcularDistancia(ref iniS._t);
+        stack.Add(iniS);
+        bool flag = true;
+        while (stack.Count > 0 && flag)
+        {
+
+            State top = (State)stack[0];
+            stack.RemoveAt(0);
+            if (solucion(top._t))
+            {
+
+                movimientos = top.c;
+                flag = false;
+            }
+            else
+            {
+
+
+
+                List<State> list = visitaM(ref top);
+                int limite = stack.Count;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    bool meter = true;
+                    for (int j = 0; j < limite; j++)
+                    {
+                        if (comparaTableros(stack[j]._t, list[i]._t))
+                        {
+                            if (stack[j].c.Count > list[i].c.Count)
+                                stack[j] = list[i];
+                            else
+                                meter = false;
+                        }
+                    }
+                    if (meter)
+                    {
+                        stack.Add(list[i]);
+                    }
+
+                }
+                Debug.Log(stack.Count);
+            }
+
+        }
+        tiempoNecesitado = Time.time - tini;
+        HUDTiempo.text = tiempoNecesitado.ToString() + " ms";
+        mostrarSolucion();
+
+    }
+
+
 }
+
+
+    
+
 
     
     
