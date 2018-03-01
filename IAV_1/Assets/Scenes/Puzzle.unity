@@ -664,9 +664,9 @@ RectTransform:
   m_Father: {fileID: 754347083}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -160, y: 253}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -201.5, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &453835614
@@ -1377,6 +1377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2b9d69406f7754b9cf94ba9954b160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tiempoNecesitado: 0
   _canvas: {fileID: 2103016498}
   prefabTile: {fileID: 1193909987159988, guid: ffe35f0da3f9ccc49bd089fe4142ede1, type: 2}
   HUDTiempo: {fileID: 1793422294}
@@ -1436,9 +1437,9 @@ RectTransform:
   m_Father: {fileID: 754347083}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 164, y: 253}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 201.5, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1793422294
