@@ -12,38 +12,37 @@ public class Tile : MonoBehaviour {
 	bool movida;
 	// Use this for initialization
 	void Start () {
-		movida = false;
-		
+        Debug.Log("se ha creado un tile");		
 	}
-	public void ini(int nTile_,int coste_ ){
+	public void ini(int nTile_,int coste_ , int x, int y){
 		nTile = nTile_;
 		coste = coste_;
+        posX = x;
+        posY = y;
 		switch (nTile) {
 		case 0:
-			GetComponent<UnityEngine.UI.Image> ().color = Color.green;
+			GetComponent<SpriteRenderer> ().color = Color.green;
 			break;
 		case 1:
-			GetComponent<UnityEngine.UI.Image> ().color = Color.blue;
+			GetComponent<SpriteRenderer> ().color = Color.blue;
 			break;
 		case 2:
-			GetComponent<UnityEngine.UI.Image> ().color = Color.gray;
+			GetComponent<SpriteRenderer> ().color = Color.gray;
 			break;
 		default:
 			break;
 		}
-		
+       Transform t =  GetComponent<Transform>();
+        t.transform.Translate(x, y, 0);
 
-		int k = 0;
-		k++;
-	}
-	public void setPos(int pX,int pY){
-		posX = pX;
-		posY = pY;
-		gameObject.transform.localPosition.Set ((float)pX,(float) pY, 0);
-	}
+    }
 	// Update is called once per frame
-	void Update () {
-		if(movida)
-		
-	}
+	void Update ()
+    {
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log("suuu");
+    }
 }
