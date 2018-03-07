@@ -34,4 +34,43 @@ public class Mapa : MonoBehaviour {
         }
 
     }
+
+    public bool[,] getMarcados()
+    {
+        bool[,] marcados = new bool[altoMapa,anchoMapa];
+        for (int i = 0; i < altoMapa; i++)
+        {
+            for (int j = 0; j < anchoMapa; j++)
+            {
+                marcados[i,j] = mapaTiles[i, j].isOccupied();
+            }
+        }
+        return marcados;
+    }
+
+    public int[,] getDistTo(int origenI, int origenJ)
+    {
+        int[,] distTo = new int[altoMapa, anchoMapa];
+        for (int i = 0; i < altoMapa; i++)
+        {
+            for (int j = 0; j < anchoMapa; j++)
+            {
+                distTo[i, j] = (i==origenI&&j==origenJ)? 0 :int.MaxValue  ;
+            }
+        }
+        return distTo;
+    }
+
+    public int getCostOfTile(int i,int j)
+    {
+        return mapaTiles[i, j].getCost();
+    }
+    public int getAlto()
+    {
+        return altoMapa;
+    }
+    public int getAncho()
+    {
+        return anchoMapa;
+    }
 }

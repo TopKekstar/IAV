@@ -17,4 +17,23 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void setCurrentUnit(GameObject unidad)
+    {
+        unidadActual = unidad;
+    }
+
+    public void mueveUnidad(Vector3 casilla)
+    {
+        Debug.Log(casilla.ToString());
+        if (unidadActual != null)
+        {
+            Queue<Vector3>camino =  unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
+            while (camino.Count>0)
+            {
+                Debug.Log(camino.Peek());
+
+            }
+        }
+    }
 }

@@ -13,4 +13,10 @@ public class Unidad : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    private void OnMouseDown()
+    {
+        Debug.Log("unidad Clickada");
+        GameManager.instance.setCurrentUnit(gameObject);
+    }
 }

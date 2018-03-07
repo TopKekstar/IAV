@@ -9,10 +9,10 @@ public class Tile : MonoBehaviour {
 	int coste;
 	public int posX;
 	public int posY;
-	bool movida;
+    bool ocupada;
 	// Use this for initialization
 	void Start () {
-        Debug.Log("se ha creado un tile");		
+        ocupada = false;
 	}
 	public void ini(int nTile_,int coste_ , int x, int y){
 		nTile = nTile_;
@@ -28,10 +28,12 @@ public class Tile : MonoBehaviour {
 			break;
 		case 2:
 			GetComponent<SpriteRenderer> ().color = Color.gray;
+                ocupada = true;
 			break;
 		default:
 			break;
 		}
+
        Transform t =  GetComponent<Transform>();
         t.transform.Translate(x, y, 0);
 
@@ -41,8 +43,19 @@ public class Tile : MonoBehaviour {
     {
     }
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
-        Debug.Log("suuu");
+        if (Input.GetMouseButtonDown(0))
+            Debug.Log("Pressed left click.");
+        if (Input.GetMouseButtonDown(1))
+            GameManager.instance.mueveUnidad(transform.localPosition);            
+    }
+    public bool isOccupied()
+    {
+        return ocupada;
+    }
+
+    public int getCost() {
+        return coste;
     }
 }
