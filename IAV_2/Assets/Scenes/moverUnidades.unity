@@ -360,7 +360,7 @@ GameObject:
   - component: {fileID: 1133473128}
   - component: {fileID: 1133473130}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -445,3 +445,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8ff1e87454a1340a44e641105bfa07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unidadActual: {fileID: 0}
+  mapa: {fileID: 1133473130}

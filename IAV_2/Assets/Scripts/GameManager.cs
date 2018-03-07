@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject unidadActual;
+    public Mapa mapa;
 
     // Use this for initialization
     void Start () {
