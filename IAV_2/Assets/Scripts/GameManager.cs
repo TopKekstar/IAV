@@ -25,15 +25,9 @@ public class GameManager : MonoBehaviour {
 
     public void mueveUnidad(Vector3 casilla)
     {
-        Debug.Log(casilla.ToString());
-        if (unidadActual != null)
+       if (unidadActual != null)
         {
-            Queue<Vector3>camino =  unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
-            while (camino.Count>0)
-            {
-                Debug.Log(camino.Peek());
-
-            }
+           unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
         }
     }
 }
