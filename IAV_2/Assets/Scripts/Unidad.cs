@@ -5,16 +5,18 @@ using UnityEngine;
 public class Unidad : MonoBehaviour {
     Mapa mapa;
     Stack<Vector2Int> camino;
+    Vector2Int pos;
     // Use this for initialization
     void Start () {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        pos.x = (int)transform.localPosition.x;
+        pos.y = (int)transform.localPosition.y;
+
+    }
 
     private void OnMouseDown()
     {

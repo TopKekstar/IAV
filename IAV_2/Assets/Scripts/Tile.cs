@@ -19,6 +19,16 @@ public class Tile : MonoBehaviour {
 	void Start () {
         ocupada = false;
 	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("suu");
+        ocupada = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        ocupada = false;
+    }
     public void ini(E_Tile tipo_, int x, int y){
 
 

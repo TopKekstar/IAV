@@ -22,6 +22,11 @@ public class PathFinder : MonoBehaviour {
 		
 	}
 
+    int heuristic(Vector2Int a , Vector2Int b)
+    {
+        return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
+    }
+
 	void relax(Vector2Int origen, Vector2Int direccion)
     {
         Vector2Int destino = origen + direccion;
@@ -31,7 +36,7 @@ public class PathFinder : MonoBehaviour {
 				if (DistTo [destino.y, destino.x] > DistTo [origen.y, origen.x]+ mapa.getCostOfTile(destino.y, destino.x)) {
 					DistTo [destino.y, destino.x] = DistTo [origen.y, origen.x] + mapa.getCostOfTile (destino.y, destino.x);
 					EdgeTo [destino.y, destino.x] = origen;
-                    PQ.Enqueue(destino, DistTo[destino.y, destino.x]);                   
+                    PQ.Enqueue(destino, DistTo[destino.y, destino.x]+heuristic(origen,UltimaCasilla));                   
 				}
 			}
 		}
@@ -67,15 +72,23 @@ public class PathFinder : MonoBehaviour {
 		EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
 		PQ.EnqueueWithoutDuplicates(from,0);
         int k = 0;
+        bool buscando= false;
 
-		while (PQ.Count>0 && k <100)
+		while (PQ.Count>0 && !buscando)
         {
 			Vector2Int top = PQ.Dequeue();
-            for (int i = 0; i < directions.Length; i++)
+            if (top != UltimaCasilla)
             {
-                relax(top, directions[i]);
+                for (int i = 0; i < directions.Length; i++)
+                {
+                    relax(top, directions[i]);
+                }
             }
-            k++;
+            else
+            {
+                buscando = true;
+            }
+                
         }
         GetComponent<Unidad>().setPath( GetPath(ref UltimaCasilla, ref from));
 		
