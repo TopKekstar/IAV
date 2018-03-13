@@ -37,14 +37,21 @@ public class PathFinder : MonoBehaviour {
 		}
     }
 
-    Queue<Vector2Int> GetPath(ref Vector2Int to,ref Vector2Int from)
+    Stack<Vector2Int> GetPath(ref Vector2Int to,ref Vector2Int from)
     {
-        Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        do
+        Stack<Vector2Int> queue = new Stack<Vector2Int>();
+
+        queue.Push(to);
+        while (to != from) 
         {
-            queue.Enqueue(EdgeTo[to.y, to.x]);
+            queue.Push(EdgeTo[to.y, to.x]);
+            Debug.Log(queue.Peek().ToString());
             to = EdgeTo[to.y, to.x];
-        } while (to != from);
+            
+        } 
+
+
+
         return queue;
     }
 

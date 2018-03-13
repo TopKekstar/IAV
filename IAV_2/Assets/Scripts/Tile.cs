@@ -4,8 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour {
+    public enum E_Tile
+    {
+        CESPED = 0, RIO = 1, MURO = 2
+    }
+
+    E_Tile tipo;
 	
-	int nTile;
 	int coste;
 	public int posX;
 	public int posY;
@@ -14,28 +19,38 @@ public class Tile : MonoBehaviour {
 	void Start () {
         ocupada = false;
 	}
-	public void ini(int nTile_,int coste_ , int x, int y){
-		nTile = nTile_;
-		coste = coste_;
-        posX = x;
-        posY = y;
-		switch (nTile) {
-		case 0:
-			GetComponent<SpriteRenderer> ().color = Color.green;
-			break;
-		case 1:
-			GetComponent<SpriteRenderer> ().color = Color.blue;
-			break;
-		case 2:
-			GetComponent<SpriteRenderer> ().color = Color.gray;
-                ocupada = true;
-			break;
-		default:
-			break;
-		}
+    public void ini(E_Tile tipo_, int x, int y){
 
+
+
+        tipo = tipo_;
+        updateTile();
        Transform t =  GetComponent<Transform>();
         t.transform.Translate(x, y, 0);
+
+    }
+
+    void updateTile()
+    {
+        switch (tipo)
+        {
+            case E_Tile.CESPED:
+                GetComponent<SpriteRenderer>().color = Color.green;
+                coste = 1;
+                ocupada = false;
+                break;
+            case E_Tile.RIO:
+                GetComponent<SpriteRenderer>().color = Color.blue;
+                coste = 2;
+                ocupada = false;
+                break;
+            case E_Tile.MURO:
+                GetComponent<SpriteRenderer>().color = Color.gray;
+                ocupada = true;
+                break;
+            default:
+                break;
+        }
 
     }
 	// Update is called once per frame
@@ -46,9 +61,29 @@ public class Tile : MonoBehaviour {
     private void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
-            Debug.Log("Pressed left click.");
+            changeTile();
         if (Input.GetMouseButtonDown(1))
             GameManager.instance.mueveUnidad(transform.localPosition);            
+    }
+
+    private void changeTile()
+    {
+        switch (tipo)
+        {
+            case E_Tile.CESPED:
+                tipo = E_Tile.RIO;
+                break;
+            case E_Tile.RIO:
+               tipo = E_Tile.MURO;
+                break;
+            case E_Tile.MURO:
+               tipo = E_Tile.CESPED;
+               break;
+            default:
+                break;
+        }
+        updateTile();
+
     }
     public bool isOccupied()
     {

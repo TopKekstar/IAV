@@ -29,7 +29,9 @@ public class Mapa : MonoBehaviour {
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-                mapaTiles[i, j].ini(0, 1, j, i);
+
+                mapaTiles[i, j].ini(Tile.E_Tile.CESPED, j, i);
+
             }
         }
 

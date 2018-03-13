@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Unidad : MonoBehaviour {
     Mapa mapa;
-    Queue<Vector2Int> camino;
+    Stack<Vector2Int> camino;
     // Use this for initialization
     void Start () {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
@@ -22,7 +22,7 @@ public class Unidad : MonoBehaviour {
         GameManager.instance.setCurrentUnit(gameObject);
     }
 
-    public void setPath(Queue<Vector2Int> c)
+    public void setPath(Stack<Vector2Int> c)
     {
         camino = c;
         followPath();
@@ -31,13 +31,16 @@ public class Unidad : MonoBehaviour {
 
     public void followPath()
     {
-        Debug.Log("suu");
         if (camino.Count > 0)
         {
-            Vector2Int vector = camino.Dequeue();
-            Vector3 v = new Vector3(vector.x, vector.y, -0.5f);
-            v = transform.localPosition - new Vector3(vector.x, vector.y, -0.5f);
-            transform.localPosition += v;
+            Vector2Int vector = camino.Pop();
+            
+            Vector3 v = new Vector3(vector.x, vector.y, 0);
+
+            
+            
+
+            transform.Translate(v-transform.localPosition,transform);
             Invoke("followPath", mapa.getCostOfTile(vector.y, vector.x));
         }
     }
