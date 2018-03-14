@@ -5,6 +5,7 @@ using UnityEngine;
 
 
 public class PathFinder : MonoBehaviour {
+    
     Mapa mapa;
     Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
 	
@@ -12,6 +13,7 @@ public class PathFinder : MonoBehaviour {
 	int[,] DistTo;
 	Vector2Int[,] EdgeTo;
     Vector2Int UltimaCasilla;
+    bool caminoPosible; 
     private Priority_Queue.SimplePriorityQueue<Vector2Int,int> PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int,int>();	
     // Use this for initialization
     void Start () {
@@ -60,12 +62,12 @@ public class PathFinder : MonoBehaviour {
         return queue;
     }
 
-   public void CalculatePath(Vector3 to)
+   public IEnumerator CalculatePath(GameObject g)
     {
+        Vector3 to = g.transform.localPosition;
+        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch() ;
+        stopwatch.Start();
         UltimaCasilla = new Vector2Int((int)to.x, (int)to.y);
-        Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
-
-
         PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
         marcados = mapa.getMarcados();
         DistTo = mapa.getDistTo((int)transform.localPosition.y, (int)transform.localPosition.x);
@@ -77,11 +79,14 @@ public class PathFinder : MonoBehaviour {
                 EdgeTo[i, j] = new Vector2Int(-1, -1);
             }
         }
+        Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
 		PQ.EnqueueWithoutDuplicates(from,0);
-        int k = 0;
-        bool buscando= false;
+        caminoPosible = false;
 
-		while (PQ.Count>0 && !buscando)
+
+        int k = 0;
+
+		while (PQ.Count>0 && !caminoPosible)
         {
             k++;
 			Vector2Int top = PQ.Dequeue();
@@ -94,15 +99,22 @@ public class PathFinder : MonoBehaviour {
             }
             else
             {
-                buscando = true;
+                caminoPosible = true;
+            }
+            if (k== 50)
+            {
+                k = 0;
+                yield return null;
             }
                 
         }
-        if (buscando)
+        if (caminoPosible)
         {
             GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
-        Debug.Log(k.ToString());
+        stopwatch.Stop();
+        Debug.Log(stopwatch.ElapsedMilliseconds);
+        GameManager.instance.setCross(gameObject,  g);
 		
     }
 

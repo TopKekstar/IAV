@@ -24,15 +24,16 @@ public class GameManager : MonoBehaviour {
         unidadActual = unidad;
     }
 
-    public void mueveUnidad(Vector3 casilla)
+    public void mueveUnidad(GameObject casilla)
     {
-       if (unidadActual != null)
+        if (unidadActual != null)
         {
-            Debug.Log(casilla.ToString());
            unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
-           GameObject cross =  Instantiate(prefabCross,mapa.transform);
-            cross.transform.Translate(casilla,mapa.transform);
            unidadActual = null;
         }
+    }
+    public void setCross(GameObject unidad,GameObject casilla) {
+        GameObject cross = Instantiate(prefabCross, casilla.transform.position, casilla.transform.localRotation, mapa.transform);
+        unidad.GetComponent<Unidad>().setCross(ref cross);
     }
 }

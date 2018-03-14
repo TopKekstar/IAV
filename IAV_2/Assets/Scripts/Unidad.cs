@@ -5,6 +5,7 @@ using UnityEngine;
 public class Unidad : MonoBehaviour {
     Mapa mapa;
     Stack<Vector2Int> camino;
+    GameObject _cross;
     Vector2Int pos;
     // Use this for initialization
     void Start () {
@@ -43,8 +44,20 @@ public class Unidad : MonoBehaviour {
             
 
             transform.Translate(v-transform.localPosition,transform);
-            Invoke("followPath", mapa.getCostOfTile(vector.y, vector.x));
+            if (camino.Count == 0)
+            {
+                Destroy(_cross);
+            }
+            else
+            {
+                Invoke("followPath", mapa.getCostOfTile(vector.y, vector.x));
+            } 
         }
+    }
+    public void setCross(ref GameObject cross)
+    {
+        _cross = cross;
+        _cross.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
     }
 
     

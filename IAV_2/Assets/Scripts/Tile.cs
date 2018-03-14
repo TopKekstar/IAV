@@ -73,7 +73,7 @@ public class Tile : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
             changeTile();
         if (Input.GetMouseButtonDown(1))
-            GameManager.instance.mueveUnidad(transform.localPosition);            
+            GameManager.instance.mueveUnidad(gameObject);            
     }
 
     private void changeTile()

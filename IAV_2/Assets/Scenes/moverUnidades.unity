@@ -451,8 +451,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fichero: {fileID: 4900000, guid: 631c5fa49e521724fbc69c82ef0ad05e, type: 3}
   prefabTile: {fileID: 1123597072306978, guid: 9d23a848906d09f478b846094bdfeb0a, type: 2}
-  anchoMapa: 8
-  altoMapa: 8
+  anchoMapa: 20
+  altoMapa: 20
 --- !u!4 &1330153147 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4828732391995550, guid: 2bfbf3a8305853f4daf6999c9be39d31,
