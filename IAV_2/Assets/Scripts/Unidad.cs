@@ -46,7 +46,7 @@ public class Unidad : MonoBehaviour {
             transform.Translate(v-transform.localPosition,transform);
             if (camino.Count == 0)
             {
-                Destroy(_cross);
+                _cross.SetActive(false);
             }
             else
             {

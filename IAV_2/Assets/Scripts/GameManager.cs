@@ -28,7 +28,11 @@ public class GameManager : MonoBehaviour {
     {
         if (unidadActual != null)
         {
-           unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
+            if (unidadActual.GetComponent<PathFinder>().CalculatePath(casilla))
+            {
+                setCross(unidadActual, casilla);
+
+            }
            unidadActual = null;
         }
     }
