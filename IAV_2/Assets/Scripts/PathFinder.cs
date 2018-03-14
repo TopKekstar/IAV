@@ -70,12 +70,20 @@ public class PathFinder : MonoBehaviour {
         marcados = mapa.getMarcados();
         DistTo = mapa.getDistTo((int)transform.localPosition.y, (int)transform.localPosition.x);
 		EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
+        for (int i = 0; i < mapa.altoMapa; i++)
+        {
+            for (int j = 0; j < mapa.anchoMapa; j++)
+            {
+                EdgeTo[i, j] = new Vector2Int(-1, -1);
+            }
+        }
 		PQ.EnqueueWithoutDuplicates(from,0);
         int k = 0;
         bool buscando= false;
 
 		while (PQ.Count>0 && !buscando)
         {
+            k++;
 			Vector2Int top = PQ.Dequeue();
             if (top != UltimaCasilla)
             {
@@ -90,7 +98,11 @@ public class PathFinder : MonoBehaviour {
             }
                 
         }
-        GetComponent<Unidad>().setPath( GetPath(ref UltimaCasilla, ref from));
+        if (buscando)
+        {
+            GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
+        }
+        Debug.Log(k.ToString());
 		
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public GameObject unidadActual;
+    public GameObject prefabCross;
     public Mapa mapa;
 
     // Use this for initialization
@@ -27,8 +28,11 @@ public class GameManager : MonoBehaviour {
     {
        if (unidadActual != null)
         {
+            Debug.Log(casilla.ToString());
            unidadActual.GetComponent<PathFinder>().CalculatePath(casilla);
-            unidadActual = null;
+           GameObject cross =  Instantiate(prefabCross,mapa.transform);
+            cross.transform.Translate(casilla,mapa.transform);
+           unidadActual = null;
         }
     }
 }

@@ -499,4 +499,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unidadActual: {fileID: 0}
+  prefabCross: {fileID: 1284628056230136, guid: 8e2744900d6b0834f9cd2d055c91258b,
+    type: 2}
   mapa: {fileID: 1133473130}
