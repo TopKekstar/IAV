@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour {
-    public enum E_Tile
+    public enum E_Tile:int
     {
         CESPED = 0, RIO = 1, MURO = 2
     }
@@ -14,30 +14,24 @@ public class Tile : MonoBehaviour {
 	int coste;
 	public int posX;
 	public int posY;
-    bool ocupada;
+    public bool ocupada;
 	// Use this for initialization
 	void Start () {
-        ocupada = false;
 	}
-    private void OnTriggerEnter2D(Collider2D collision)
+
+
+    public void ini(E_Tile tipo_, int x, int y)
     {
-        Debug.Log("suu");
-        ocupada = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        ocupada = false;
-    }
-    public void ini(E_Tile tipo_, int x, int y){
-
-
-
         tipo = tipo_;
         updateTile();
-       Transform t =  GetComponent<Transform>();
+        Transform t = GetComponent<Transform>();
         t.transform.Translate(x, y, 0);
 
+    }
+
+    public bool getOccupied()
+    {
+        return ocupada;
     }
 
     public void setOccupied(bool value)
@@ -75,7 +69,7 @@ public class Tile : MonoBehaviour {
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&GameManager.instance.editMode)
             changeTile();
         if (Input.GetMouseButtonDown(1))
             GameManager.instance.mueveUnidad(gameObject);            

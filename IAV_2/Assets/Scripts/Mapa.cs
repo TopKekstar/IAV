@@ -7,6 +7,7 @@ public class Mapa : MonoBehaviour {
 	public GameObject prefabTile;
 	public int anchoMapa;
 	public int altoMapa;
+    public int nRocasMax;
 	Tile[,] mapaTiles;
 	// Use this for initialization
 	void Start () {
@@ -41,6 +42,36 @@ public class Mapa : MonoBehaviour {
 
     }
 
+    public void iniciarAleatorio()
+    {
+        int nMuros = 0;
+        for (int i = 0; i < altoMapa; i++)
+        {
+            for (int j = 0; j < anchoMapa; j++)
+            {
+                Tile.E_Tile tipoTile =(Tile.E_Tile)Random.Range(0, 3);
+                if(tipoTile == Tile.E_Tile.MURO)
+                {
+                    if (nMuros < nRocasMax)
+                    {
+                        nMuros++;
+
+                    }
+                    else
+                    {
+                        tipoTile -= Random.Range(1, 2);
+                    }
+                }
+                mapaTiles[i, j].ini(tipoTile, j, i);
+
+            }
+        }
+
+    }
+    public bool getOccupied(int i, int j)
+    {
+        return mapaTiles[i, j].getOccupied();
+    }
     public bool[,] getMarcados()
     {
         bool[,] marcados = new bool[altoMapa,anchoMapa];

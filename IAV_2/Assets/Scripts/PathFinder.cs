@@ -28,7 +28,7 @@ public class PathFinder : MonoBehaviour
 
     int heuristic(Vector2Int a, Vector2Int b)
     {
-        return System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y);
+        return 1*(System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y));
     }
 
     void relax(Vector2Int origen, Vector2Int direccion)
@@ -37,7 +37,7 @@ public class PathFinder : MonoBehaviour
         if (!(destino.x < 0 || destino.y < 0 || destino.x >= mapa.getAncho() || destino.y >= mapa.getAlto()))
         {
 
-            if (!mapa[destino.y, destino.x])
+            if (!mapa.getOccupied(destino.y, destino.x))
             {
                 if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + mapa.getCostOfTile(destino.y, destino.x))
                 {
@@ -57,7 +57,6 @@ public class PathFinder : MonoBehaviour
         while (to != from)
         {
             queue.Push(EdgeTo[to.y, to.x]);
-            Debug.Log(queue.Peek().ToString());
             to = EdgeTo[to.y, to.x];
 
         }
@@ -74,7 +73,6 @@ public class PathFinder : MonoBehaviour
         stopwatch.Start();
         UltimaCasilla = new Vector2Int((int)to.x, (int)to.y);
         PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
-        marcados = mapa.getMarcados();
         DistTo = mapa.getDistTo((int)transform.localPosition.y, (int)transform.localPosition.x);
         EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
         for (int i = 0; i < mapa.altoMapa; i++)
@@ -85,6 +83,7 @@ public class PathFinder : MonoBehaviour
             }
         }
         Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
+        mapa.setOccupied(from.y, from.x, true);
         PQ.EnqueueWithoutDuplicates(from, 0);
         caminoPosible = false;
 
@@ -108,12 +107,15 @@ public class PathFinder : MonoBehaviour
             }
 
         }
+        stopwatch.Stop();
         if (caminoPosible)
         {
             GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
-        stopwatch.Stop();
-        Debug.Log(stopwatch.ElapsedMilliseconds);
+        GameManager.instance.updateDiagnostico(caminoPosible);
+        GameManager.instance.updateDiagnostico(k,stopwatch.ElapsedMilliseconds,stopwatch.ElapsedTicks);
+
+
         return (caminoPosible);
 
     }

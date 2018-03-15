@@ -10,13 +10,12 @@ public class Unidad : MonoBehaviour {
     // Use this for initialization
     void Start () {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-        updatePos();
+        Color color = new Color(Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f));
+        GetComponent<SpriteRenderer>().color = color;
     }
 	
 	// Update is called once per frame
 	void Update () {
-       
-
 
     }
 
@@ -28,7 +27,7 @@ public class Unidad : MonoBehaviour {
     {
         pos.x = (int)transform.localPosition.x;
         pos.y = (int)transform.localPosition.y;
-        mapa.setOccupied(pos.y, pos.y, true);
+        mapa.setOccupied(pos.y, pos.x, true);
     }
     public void setPath(Stack<Vector2Int> c)
     {
@@ -52,6 +51,7 @@ public class Unidad : MonoBehaviour {
             if (camino.Count == 0)
             {
                 Destroy(_cross);
+                GameManager.instance.camara.ResetTarget();
             }
             else
             {
