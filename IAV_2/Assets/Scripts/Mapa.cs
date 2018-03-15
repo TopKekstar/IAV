@@ -17,11 +17,15 @@ public class Mapa : MonoBehaviour {
 				mapaTiles [i, j] = auxT.GetComponent<Tile> ();
             }
 		}
-        Invoke("iniciarMapa", 0.16f);
+        iniciarMapa();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+    }
+    public void setOccupied(int i,int j,bool value)
+    {
+        mapaTiles[i, j].setOccupied(value);
     }
     public void iniciarMapa()
     {

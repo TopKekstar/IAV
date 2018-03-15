@@ -40,6 +40,11 @@ public class Tile : MonoBehaviour {
 
     }
 
+    public void setOccupied(bool value)
+    {
+        ocupada = value;
+    }
+
     void updateTile()
     {
         switch (tipo)
@@ -78,22 +83,24 @@ public class Tile : MonoBehaviour {
 
     private void changeTile()
     {
-        switch (tipo)
+        if (!ocupada || tipo != E_Tile.MURO)
         {
-            case E_Tile.CESPED:
-                tipo = E_Tile.RIO;
-                break;
-            case E_Tile.RIO:
-               tipo = E_Tile.MURO;
-                break;
-            case E_Tile.MURO:
-               tipo = E_Tile.CESPED;
-               break;
-            default:
-                break;
+            switch (tipo)
+            {
+                case E_Tile.CESPED:
+                    tipo = E_Tile.RIO;
+                    break;
+                case E_Tile.RIO:
+                    tipo = E_Tile.MURO;
+                    break;
+                case E_Tile.MURO:
+                    tipo = E_Tile.CESPED;
+                    break;
+                default:
+                    break;
+            }
+            updateTile();
         }
-        updateTile();
-
     }
     public bool isOccupied()
     {

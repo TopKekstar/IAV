@@ -10,43 +10,48 @@ public class Unidad : MonoBehaviour {
     // Use this for initialization
     void Start () {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
+        updatePos();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        pos.x = (int)transform.localPosition.x;
-        pos.y = (int)transform.localPosition.y;
+       
+
 
     }
 
     private void OnMouseDown()
     {
-        Debug.Log("unidad Clickada");
         GameManager.instance.setCurrentUnit(gameObject);
     }
-
+    void updatePos()
+    {
+        pos.x = (int)transform.localPosition.x;
+        pos.y = (int)transform.localPosition.y;
+        mapa.setOccupied(pos.y, pos.y, true);
+    }
     public void setPath(Stack<Vector2Int> c)
     {
         camino = c;
         followPath();
 
     }
+    void moveTo(Vector3 v)
+    {
 
+        mapa.setOccupied((int)transform.localPosition.y, (int)transform.localPosition.x, false);
+        transform.Translate(v - transform.localPosition, transform);
+        updatePos();
+    }
     public void followPath()
     {
         if (camino.Count > 0)
         {
             Vector2Int vector = camino.Pop();
-            
-            Vector3 v = new Vector3(vector.x, vector.y, 0);
-
-            
-            
-
-            transform.Translate(v-transform.localPosition,transform);
+            moveTo(new Vector3(vector.x, vector.y, 0));
             if (camino.Count == 0)
             {
-                _cross.SetActive(false);
+                Destroy(_cross);
             }
             else
             {

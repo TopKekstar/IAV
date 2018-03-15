@@ -9,8 +9,6 @@ public class PathFinder : MonoBehaviour
 
     Mapa mapa;
     Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
-
-    bool[,] marcados;
     int[,] DistTo;
     Vector2Int[,] EdgeTo;
     Vector2Int UltimaCasilla;
@@ -20,6 +18,7 @@ public class PathFinder : MonoBehaviour
     void Start()
     {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
+        
     }
     // Update is called once per frame
     void Update()
@@ -38,7 +37,7 @@ public class PathFinder : MonoBehaviour
         if (!(destino.x < 0 || destino.y < 0 || destino.x >= mapa.getAncho() || destino.y >= mapa.getAlto()))
         {
 
-            if (!marcados[destino.y, destino.x])
+            if (!mapa[destino.y, destino.x])
             {
                 if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + mapa.getCostOfTile(destino.y, destino.x))
                 {
@@ -112,7 +111,6 @@ public class PathFinder : MonoBehaviour
         if (caminoPosible)
         {
             GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
-            GameManager.instance.setCross(gameObject, g);
         }
         stopwatch.Stop();
         Debug.Log(stopwatch.ElapsedMilliseconds);
