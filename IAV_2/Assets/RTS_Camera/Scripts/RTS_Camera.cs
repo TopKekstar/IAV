@@ -228,7 +228,7 @@ namespace RTS_Cam
                 Rect downRect = new Rect(0, 0, Screen.width, screenEdgeBorder);
 
                 desiredMove.x = leftRect.Contains(MouseInput) ? -1 : rightRect.Contains(MouseInput) ? 1 : 0;
-                desiredMove.z = upRect.Contains(MouseInput) ? 1 : downRect.Contains(MouseInput) ? -1 : 0;
+                desiredMove.y = upRect.Contains(MouseInput) ? 1 : downRect.Contains(MouseInput) ? -1 : 0;
 
                 desiredMove *= screenEdgeMovementSpeed;
                 desiredMove *= Time.deltaTime;
@@ -240,7 +240,7 @@ namespace RTS_Cam
         
             if(usePanning && Input.GetKey(panningKey) && MouseAxis != Vector2.zero)
             {
-                Vector3 desiredMove = new Vector3(-MouseAxis.x, 0, -MouseAxis.y);
+				Vector3 desiredMove = new Vector3(-MouseAxis.x, -MouseAxis.y,0 );
 
                 desiredMove *= panningSpeed;
                 desiredMove *= Time.deltaTime;

@@ -113,6 +113,78 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &194453612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 194453613}
+  - component: {fileID: 194453615}
+  - component: {fileID: 194453614}
+  m_Layer: 5
+  m_Name: fondo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &194453613
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 194453612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1576685816}
+  - {fileID: 495431058}
+  - {fileID: 476287760}
+  - {fileID: 744681270}
+  m_Father: {fileID: 602153172}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 96.70599, y: -53.55}
+  m_SizeDelta: {x: 193.41, y: 107.11}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &194453614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 194453612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &194453615
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 194453612}
 --- !u!1 &476287759
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,13 +213,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 602153172}
+  m_Father: {fileID: 194453613}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 98.652, y: 9.649994}
-  m_SizeDelta: {x: 189.52, y: 19.299988}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 150.62901, y: -10.036682}
+  m_SizeDelta: {x: 85.557, y: 19.300003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &476287761
 MonoBehaviour:
@@ -192,7 +264,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: H para instrucciones
+  m_Text: H for help
 --- !u!222 &476287763
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -227,13 +299,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 694841266}
-  m_Father: {fileID: 602153172}
+  m_Father: {fileID: 194453613}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -184.84836, y: 194.79503}
-  m_SizeDelta: {x: 189.52, y: 19.81}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 50.218994, y: -29.201649}
+  m_SizeDelta: {x: 100.44, y: 19.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &495431059
 MonoBehaviour:
@@ -313,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -353,11 +425,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1576685816}
-  - {fileID: 495431058}
-  - {fileID: 476287760}
-  - {fileID: 1605284501}
-  - {fileID: 744681270}
+  - {fileID: 194453613}
+  - {fileID: 722414794}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -433,13 +502,82 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: no hay unidad seleccionada
+  m_Text: NULL
 --- !u!222 &694841268
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 694841265}
+--- !u!1 &722414793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 722414794}
+  - component: {fileID: 722414796}
+  - component: {fileID: 722414795}
+  m_Layer: 5
+  m_Name: fondo (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &722414794
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 722414793}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1605284501}
+  m_Father: {fileID: 602153172}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -153.4, y: -80.18}
+  m_SizeDelta: {x: 305.81006, y: 160.37}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &722414795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 722414793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &722414796
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 722414793}
 --- !u!1 &744681269
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,12 +606,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 602153172}
-  m_RootOrder: 4
+  m_Father: {fileID: 194453613}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98.652, y: -91.49}
+  m_AnchoredPosition: {x: 98.651024, y: -91.491646}
   m_SizeDelta: {x: 189.52, y: 104.77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744681271
@@ -642,9 +780,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fichero: {fileID: 4900000, guid: 631c5fa49e521724fbc69c82ef0ad05e, type: 3}
   prefabTile: {fileID: 1123597072306978, guid: 9d23a848906d09f478b846094bdfeb0a, type: 2}
-  anchoMapa: 50
-  altoMapa: 50
-  nRocasMax: 30
+  anchoMapa: 20
+  altoMapa: 20
+  nRocasMax: 40
 --- !u!1 &1409696031
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,7 +825,7 @@ MonoBehaviour:
   inputSettingsFoldout: 1
   useFixedUpdate: 0
   keyboardMovementSpeed: 5
-  screenEdgeMovementSpeed: 3
+  screenEdgeMovementSpeed: 10
   followingSpeed: 2.5
   rotationSped: 3
   panningSpeed: 25
@@ -706,12 +844,12 @@ MonoBehaviour:
   limitY: 10
   targetFollow: {fileID: 0}
   targetOffset: {x: 0, y: 0, z: 0}
-  useScreenEdgeInput: 0
+  useScreenEdgeInput: 1
   screenEdgeBorder: 25
   useKeyboardInput: 1
   horizontalAxis: Horizontal
   verticalAxis: Vertical
-  usePanning: 0
+  usePanning: 1
   panningKey: 325
   useKeyboardZooming: 1
   zoomInKey: 101
@@ -820,16 +958,16 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1576685815}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 602153172}
+  m_Father: {fileID: 194453613}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 98.65166, y: -9.65}
+  m_AnchoredPosition: {x: 98.65068, y: -9.651617}
   m_SizeDelta: {x: 189.52, y: 19.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1576685817
@@ -887,7 +1025,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1605284501
 RectTransform:
   m_ObjectHideFlags: 0
@@ -898,13 +1036,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 602153172}
-  m_RootOrder: 3
+  m_Father: {fileID: 722414794}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -152.35, y: -74.99445}
-  m_SizeDelta: {x: 301.52, y: 149.99}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 155.24, y: -79.81}
+  m_SizeDelta: {x: 301.52, y: 159.61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1605284502
 MonoBehaviour:
@@ -938,10 +1076,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "WASD para mover la camara\nE para alternar entre editar y mover\nEn modo
-    editar\n\tclick iziquierdo para cambiar el valor del tile \n\tclick derecho para
-    a\xF1adir una unidad\nEn modo mover\n\tclick iziquierdo seleccionar unidad\n\tclick
-    derecho mover la unidad seleccionada"
+  m_Text: "WASD para mover la camara\nE para alternar entre editar y mover\nBoton
+    del Scroll para desplazar\nEn modo editar\n\tclick iziquierdo para cambiar el
+    valor del tile \n\tclick derecho para a\xF1adir una unidad\nEn modo mover\n\tclick
+    iziquierdo seleccionar unidad\n\tclick derecho mover la unidad seleccionada\nR
+    para resetear camara y unidad seleccionada"
 --- !u!222 &1605284503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -998,5 +1137,5 @@ MonoBehaviour:
   mapa: {fileID: 1133473130}
   modoActual: {fileID: 1576685817}
   Informacion: {fileID: 694841267}
-  instrucciones: {fileID: 1605284502}
+  instrucciones: {fileID: 722414793}
   diagnostico: {fileID: 744681272}

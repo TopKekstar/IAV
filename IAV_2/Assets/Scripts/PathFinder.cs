@@ -9,6 +9,7 @@ public class PathFinder : MonoBehaviour
 
     Mapa mapa;
     Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
+	public Vector3 to;
     int[,] DistTo;
     Vector2Int[,] EdgeTo;
     Vector2Int UltimaCasilla;
@@ -68,7 +69,7 @@ public class PathFinder : MonoBehaviour
 
     public bool CalculatePath(GameObject g)
     {
-        Vector3 to = g.transform.localPosition;
+        to = g.transform.localPosition;
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
         UltimaCasilla = new Vector2Int((int)to.x, (int)to.y);
@@ -113,7 +114,7 @@ public class PathFinder : MonoBehaviour
             GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
         GameManager.instance.updateDiagnostico(caminoPosible);
-        GameManager.instance.updateDiagnostico(k,stopwatch.ElapsedMilliseconds,stopwatch.ElapsedTicks);
+		GameManager.instance.updateDiagnostico(k,stopwatch.Elapsed.TotalMilliseconds,stopwatch.ElapsedTicks);
 
 
         return (caminoPosible);

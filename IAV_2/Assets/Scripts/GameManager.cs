@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     public Mapa mapa;
     public UnityEngine.UI.Text modoActual;
     public UnityEngine.UI.Text Informacion;
-    public UnityEngine.UI.Text instrucciones;
+	public GameObject instrucciones;
     public UnityEngine.UI.Text diagnostico;
 
 
@@ -41,10 +41,17 @@ public class GameManager : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.H))
         {
-            instrucciones.gameObject.SetActive(!instrucciones.gameObject.active);
-            
-
+			instrucciones.SetActive(!instrucciones.gameObject.active);
         }
+		if (Input.GetKeyUp(KeyCode.R))
+		{
+			camara.ResetTarget ();
+			Informacion.text = "NULL";
+			Informacion.color = Color.white;
+			Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = Color.black;
+			unidadActual = null;
+		}
+		
     }
 
     public void setCurrentUnit(GameObject unidad)
@@ -69,6 +76,9 @@ public class GameManager : MonoBehaviour {
             if (unidadActual.GetComponent<PathFinder>().CalculatePath(casilla))
             {
                 setCross(unidadActual, casilla);
+				Informacion.text = "NULL";
+				Informacion.color = Color.white;
+				Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = Color.black;
 
             }
             camara.SetTarget(unidadActual.transform);
@@ -80,7 +90,7 @@ public class GameManager : MonoBehaviour {
         GameObject cross = Instantiate(prefabCross, casilla.transform.position, casilla.transform.localRotation, mapa.transform);
         unidad.GetComponent<Unidad>().setCross(ref cross);
     }
-    public void updateDiagnostico(int numeroVisitas,long milisengundos,long ticks)
+	public void updateDiagnostico(int numeroVisitas,double milisengundos,long ticks)
     {
         diagnostico.text += "Ha visitado " + numeroVisitas.ToString() + " casillas\nHa necesitado "+ milisengundos.ToString() + " ms";
         diagnostico.text += "\nHa necesitado \b"+ ticks.ToString() + " ticks";

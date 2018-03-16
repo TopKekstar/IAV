@@ -18,7 +18,7 @@ public class Mapa : MonoBehaviour {
 				mapaTiles [i, j] = auxT.GetComponent<Tile> ();
             }
 		}
-        iniciarMapa();
+		iniciarAleatorio();
 	}
 	
 	// Update is called once per frame
@@ -49,7 +49,10 @@ public class Mapa : MonoBehaviour {
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-                Tile.E_Tile tipoTile =(Tile.E_Tile)Random.Range(0, 3);
+				int aletario =  Random.Range(-3, 3);
+				if (aletario <= 0)
+					aletario = 0;
+				Tile.E_Tile tipoTile = (Tile.E_Tile)aletario;
                 if(tipoTile == Tile.E_Tile.MURO)
                 {
                     if (nMuros < nRocasMax)
@@ -97,6 +100,10 @@ public class Mapa : MonoBehaviour {
         }
         return distTo;
     }
+
+	public Tile getTile(int i,int j){
+		return mapaTiles [i, j];
+	}
 
     public int getCostOfTile(int i,int j)
     {
