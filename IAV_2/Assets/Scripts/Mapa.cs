@@ -8,6 +8,7 @@ public class Mapa : MonoBehaviour {
 	public int anchoMapa;
 	public int altoMapa;
     public int nRocasMax;
+    bool firstIni;
 	Tile[,] mapaTiles;
 	// Use this for initialization
 	void Start () {
@@ -38,7 +39,7 @@ public class Mapa : MonoBehaviour {
                 mapaTiles[i, j].ini(Tile.E_Tile.CESPED, j, i);
 
             }
-        }
+        }   
 
     }
 

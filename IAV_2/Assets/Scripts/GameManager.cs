@@ -12,17 +12,39 @@ public class GameManager : MonoBehaviour {
     public Mapa mapa;
     public UnityEngine.UI.Text modoActual;
     public UnityEngine.UI.Text Informacion;
-	public GameObject instrucciones;
+    public GameObject instrucciones;
     public UnityEngine.UI.Text diagnostico;
-
+    public List<GameObject> listaUnidades;
 
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         instance = this;
         editMode = false;
-	}
-	
+
+    }
+    public void GuardaUnidad(GameObject unidad)
+    {
+        listaUnidades.Add(unidad);
+    }
+    public void borraUnidad(GameObject gObj)
+    {
+        Destroy(gObj);
+
+    }
+    void borraUnidades()
+    {
+        for (int i = 0; i < listaUnidades.Count; i++)
+        {
+            Destroy(listaUnidades[i]);
+        }
+    }
+
+    public void reiniciaMapa()
+    {
+        borraUnidades();
+        mapa.iniciarAleatorio();
+    }
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyUp(KeyCode.E))
@@ -50,8 +72,17 @@ public class GameManager : MonoBehaviour {
 			Informacion.color = Color.white;
 			Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = Color.black;
 			unidadActual = null;
+            diagnostico.text = "";
 		}
-		
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            reiniciaMapa();
+        }
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
     }
 
     public void setCurrentUnit(GameObject unidad)
@@ -69,6 +100,7 @@ public class GameManager : MonoBehaviour {
         {
             GameObject gObj= Instantiate(prefabUnidad, mapa.transform);
             gObj.transform.Translate(casilla.transform.localPosition);
+            GuardaUnidad(gObj);
 
         }
         else if (unidadActual != null)
@@ -76,9 +108,6 @@ public class GameManager : MonoBehaviour {
             if (unidadActual.GetComponent<PathFinder>().CalculatePath(casilla))
             {
                 setCross(unidadActual, casilla);
-				Informacion.text = "NULL";
-				Informacion.color = Color.white;
-				Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = Color.black;
 
             }
             camara.SetTarget(unidadActual.transform);

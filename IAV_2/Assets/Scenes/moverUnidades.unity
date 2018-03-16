@@ -149,7 +149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.70599, y: -53.55}
+  m_AnchoredPosition: {x: 96.70599, y: -53.55005}
   m_SizeDelta: {x: 193.41, y: 107.11}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &194453614
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
+  m_UiScaleMode: 0
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -542,8 +542,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -153.4, y: -80.18}
-  m_SizeDelta: {x: 305.81006, y: 160.37}
+  m_AnchoredPosition: {x: -153.4, y: -103.756836}
+  m_SizeDelta: {x: 305.81, y: 207.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &722414795
 MonoBehaviour:
@@ -1039,10 +1039,10 @@ RectTransform:
   m_Father: {fileID: 722414794}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 155.24, y: -79.81}
-  m_SizeDelta: {x: 301.52, y: 159.61}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -150.76, y: -103.76502}
+  m_SizeDelta: {x: 301.52, y: 207.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1605284502
 MonoBehaviour:
@@ -1078,9 +1078,10 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "WASD para mover la camara\nE para alternar entre editar y mover\nBoton
     del Scroll para desplazar\nEn modo editar\n\tclick iziquierdo para cambiar el
-    valor del tile \n\tclick derecho para a\xF1adir una unidad\nEn modo mover\n\tclick
+    valor del tile \n\tclick derecho para a\xF1adir/borrar una unidad\nEn modo mover\n\tclick
     iziquierdo seleccionar unidad\n\tclick derecho mover la unidad seleccionada\nR
-    para resetear camara y unidad seleccionada"
+    para resetear camara y unidad seleccionada\nQ para reinciar el mapa y borrar todo\nESC
+    para salir"
 --- !u!222 &1605284503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1139,3 +1140,4 @@ MonoBehaviour:
   Informacion: {fileID: 694841267}
   instrucciones: {fileID: 722414793}
   diagnostico: {fileID: 744681272}
+  listaUnidades: []

@@ -21,9 +21,20 @@ public class Unidad : MonoBehaviour {
 
     }
 
-    private void OnMouseDown()
+    private void OnMouseOver()
     {
-        GameManager.instance.setCurrentUnit(gameObject);
+        if(Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
+            GameManager.instance.setCurrentUnit(gameObject);
+        if (Input.GetMouseButtonDown(1) && GameManager.instance.editMode)
+        {
+
+            GameManager.instance.borraUnidad(gameObject);
+
+        }
+    }
+    private void OnDestroy()
+    {
+        Destroy(_cross);
     }
     void updatePos()
     {

@@ -15,9 +15,13 @@ public class Tile : MonoBehaviour {
 	public int posX;
 	public int posY;
     public bool ocupada;
+    bool firstIni = false;
+
 	// Use this for initialization
 	void Start () {
-	}
+        
+
+    }
 
 
     public void ini(E_Tile tipo_, int x, int y)
@@ -25,7 +29,9 @@ public class Tile : MonoBehaviour {
         tipo = tipo_;
         updateTile();
         Transform t = GetComponent<Transform>();
-        t.transform.Translate(x, y, 0);
+        if(!firstIni)
+            t.transform.Translate(x, y, 0);
+        firstIni = true;
 
     }
 

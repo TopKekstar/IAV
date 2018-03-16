@@ -44,7 +44,10 @@ public class PathFinder : MonoBehaviour
                 {
                     DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + mapa.getCostOfTile(destino.y, destino.x);
                     EdgeTo[destino.y, destino.x] = origen;
-                    PQ.Enqueue(destino, DistTo[destino.y, destino.x] + heuristic(origen, UltimaCasilla));
+                    int h = heuristic(destino, UltimaCasilla);
+                    if (h != 0)
+                        h += DistTo[destino.y, destino.x];
+                    PQ.Enqueue(destino, h);
                 }
             }
         }
