@@ -10,6 +10,7 @@ public class Mapa : MonoBehaviour {
     public int nRocasMax;
     bool firstIni;
 	Tile[,] mapaTiles;
+    Tile nulo;
 	// Use this for initialization
 	void Start () {
 		mapaTiles = new Tile[altoMapa,anchoMapa];
@@ -19,7 +20,9 @@ public class Mapa : MonoBehaviour {
 				mapaTiles [i, j] = auxT.GetComponent<Tile> ();
             }
 		}
-		iniciarAleatorio();
+        nulo = Instantiate(prefabTile, new Vector3(0,0,-20),Quaternion.identity,gameObject.transform).GetComponent<Tile>();
+        
+        iniciarMapa();
 	}
 	
 	// Update is called once per frame
@@ -36,7 +39,7 @@ public class Mapa : MonoBehaviour {
             for (int j = 0; j < anchoMapa; j++)
             {
 
-                mapaTiles[i, j].ini(Tile.E_Tile.CESPED, j, i);
+                mapaTiles[i, j].ini(Tile.T_Terreno.T_CESPED, j, i);
 
             }
         }   
@@ -45,29 +48,11 @@ public class Mapa : MonoBehaviour {
 
     public void iniciarAleatorio()
     {
-        int nMuros = 0;
         for (int i = 0; i < altoMapa; i++)
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-				int aletario =  Random.Range(-3, 3);
-				if (aletario <= 0)
-					aletario = 0;
-				Tile.E_Tile tipoTile = (Tile.E_Tile)aletario;
-                if(tipoTile == Tile.E_Tile.MURO)
-                {
-                    if (nMuros < nRocasMax)
-                    {
-                        nMuros++;
-
-                    }
-                    else
-                    {
-                        tipoTile -= Random.Range(1, 2);
-                    }
-                }
-                mapaTiles[i, j].ini(tipoTile, j, i);
-
+				
             }
         }
 
@@ -103,7 +88,16 @@ public class Mapa : MonoBehaviour {
     }
 
 	public Tile getTile(int i,int j){
-		return mapaTiles [i, j];
+        try
+        {
+		    return mapaTiles [i, j];
+
+        }
+        catch (System.Exception)
+        {
+            return nulo;
+            throw;
+        }
 	}
 
     public int getCostOfTile(int i,int j)
