@@ -32,6 +32,7 @@ public class Tile : MonoBehaviour {
 
     public void ini(T_Terreno terreno, int x, int y)
     {
+        _contenido = T_Contenido.C_NADA;
         posX = x;
         posY = y;
         _terreno = terreno;
@@ -117,12 +118,37 @@ public class Tile : MonoBehaviour {
                 }
             }
         }
-        updateTile();
+    }
+
+    public void SetContenido(T_Contenido contenido)
+    {
+        _contenido = contenido;
+        if (_contenido == T_Contenido.C_CUERPO)
+        {
+
+            for (int i = 0; i < 4; i++)
+            {
+                try
+                { 
+                    GameManager.instance.mapa.getTile(posY + GameManager.instance.directions[i].y, posX + GameManager.instance.directions[i].x).SetContenido(T_Contenido.C_SANGRE);
+                }
+                catch (System.NullReferenceException)
+                {
+
+                }
+            }
+        }
+        
     }
 
     public T_Terreno GetTerreno()
     {
         return _terreno;
+    }
+
+    public T_Contenido GetContenido()
+    {
+        return _contenido;
     }
     public bool isOccupied()
     {

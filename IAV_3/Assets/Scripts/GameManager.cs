@@ -5,10 +5,14 @@ public class GameManager : MonoBehaviour {
     
     public Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
     public static GameManager instance;
+
+
     public RTS_Cam.RTS_Camera camara;
     public GameObject unidadActual;
     public GameObject prefabUnidad;
     public GameObject prefabCross;
+
+
     public bool editMode;
     public Mapa mapa;
     public UnityEngine.UI.Text modoActual;
@@ -16,6 +20,12 @@ public class GameManager : MonoBehaviour {
     public GameObject instrucciones;
     public UnityEngine.UI.Text diagnostico;
     public List<GameObject> listaUnidades;
+
+    public GameObject prefabCuchillo;
+    public GameObject prefabCuerpo;
+    public GameObject prefabCasa;
+    public GameObject prefabSangre;
+
 
     private void Awake()
     {
