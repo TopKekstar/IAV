@@ -92,31 +92,31 @@ public class Tile : MonoBehaviour {
 
     private void CambiaTerreno()
 	{
-        _terreno++;
-        _terreno = (_terreno == T_Terreno.T_GRAVA) ? T_Terreno.T_CESPED : _terreno;
-		updateTile ();
-        if (_terreno == T_Terreno.T_PRECIPICIO)
-        {
-
-            for (int i = 0; i < 4; i++)
-            {
-                try
-                {
-                    Tile tile;
-                    tile = GameManager.instance.mapa.getTile(posY + GameManager.instance.directions[i].y, posX + GameManager.instance.directions[i].x);
-                }
-                catch (System.Exception)
-                {
-                   
-                    throw ;
-                }
-            }
-        }
+       
     }
 
     public void SetTerreno(T_Terreno terreno)
     {
-        _terreno = terreno;
+        if (_terreno != T_Terreno.T_PRECIPICIO)
+        {
+            _terreno = terreno;
+            if (_terreno == T_Terreno.T_PRECIPICIO)
+            {
+
+                for (int i = 0; i < 4; i++)
+                {
+                    try
+                    {
+                        
+                        GameManager.instance.mapa.getTile(posY + GameManager.instance.directions[i].y, posX + GameManager.instance.directions[i].x).SetTerreno(T_Terreno.T_GRAVA) ;
+                    }
+                    catch (System.NullReferenceException )
+                    {
+
+                    }
+                }
+            }
+        }
         updateTile();
     }
 

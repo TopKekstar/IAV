@@ -38,11 +38,18 @@ public class Mapa : MonoBehaviour {
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-
                 mapaTiles[i, j].ini(Tile.T_Terreno.T_CESPED, j, i);
-
             }
-        }   
+        }
+        int nPrecipicios = 3;
+        for (int i = 0; i < nPrecipicios; i++)
+        {
+            int y = Random.Range(0, altoMapa);
+            int x = Random.Range(0, anchoMapa);
+            mapaTiles[y, x].SetTerreno(Tile.T_Terreno.T_PRECIPICIO);
+        }
+        
+
 
     }
 

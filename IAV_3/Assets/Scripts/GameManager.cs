@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class GameManager : MonoBehaviour {
+    
     public Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
     public static GameManager instance;
     public RTS_Cam.RTS_Camera camara;
@@ -17,11 +17,14 @@ public class GameManager : MonoBehaviour {
     public UnityEngine.UI.Text diagnostico;
     public List<GameObject> listaUnidades;
 
-
-    // Use this for initialization
-    void Start() {
+    private void Awake()
+    {
         instance = this;
         editMode = false;
+    }
+    // Use this for initialization
+    void Start() {
+        
 
     }
     public void GuardaUnidad(GameObject unidad)
