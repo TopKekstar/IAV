@@ -20,7 +20,7 @@ public class Mapa : MonoBehaviour {
 				mapaTiles [i, j] = auxT.GetComponent<Tile> ();
             }
 		}
-        nulo = Instantiate(prefabTile, new Vector3(0,0,-20),Quaternion.identity,gameObject.transform).GetComponent<Tile>();
+        nulo = Instantiate(prefabTile, new Vector3(0,-100,-20),Quaternion.identity,gameObject.transform).GetComponent<Tile>();
         
         iniciarMapa();
 	}
@@ -41,13 +41,24 @@ public class Mapa : MonoBehaviour {
                 mapaTiles[i, j].ini(Tile.T_Terreno.T_CESPED, j, i);
             }
         }
+        mapaTiles[0,0].SetContenido(Tile.T_Contenido.C_CASA);
+        int y = Random.Range(2, altoMapa);
+        int x = Random.Range(2, anchoMapa);
+        mapaTiles[y, x].SetContenido(Tile.T_Contenido.C_CUERPO);
+
+        int xCuchillo = Random.Range((x-2<0)?0:x-2, (x + 2 >= anchoMapa) ?anchoMapa:x+2);
+        int yCuchillo = Random.Range((y - 2 < 0) ? 0 : y - 2, (y + 2 >= altoMapa) ? altoMapa : x + 2);
+        mapaTiles[yCuchillo, xCuchillo].SetContenido(Tile.T_Contenido.C_CUCHILLO);
         int nPrecipicios = 3;
         for (int i = 0; i < nPrecipicios; i++)
         {
-            int y = Random.Range(0, altoMapa);
-            int x = Random.Range(0, anchoMapa);
-            mapaTiles[y, x].SetTerreno(Tile.T_Terreno.T_PRECIPICIO);
+            y = Random.Range(1, altoMapa);
+            x = Random.Range(1, anchoMapa);
+            if (mapaTiles[y, x].GetContenido()!= Tile.T_Contenido.C_CUERPO && mapaTiles[y, x].GetContenido() != Tile.T_Contenido.C_CUCHILLO)
+                mapaTiles[y, x].SetTerreno(Tile.T_Terreno.T_PRECIPICIO);
         }
+        Instantiate(GameManager.instance.prefabUnidad, mapaTiles[0, 0].transform.position+Vector3.back*2, mapaTiles[0, 0].transform.rotation, transform);
+
         
 
 

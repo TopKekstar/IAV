@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour {
     public void setCurrentUnit(GameObject unidad)
     {
         unidadActual = unidad;
+        Debug.Log("suu");
         
         Informacion.text = "unidad █ ";
         Informacion.color = unidadActual.GetComponent<SpriteRenderer>().color;
@@ -131,7 +132,7 @@ public class GameManager : MonoBehaviour {
     }
     public void setCross(GameObject unidad,GameObject casilla) {
         GameObject cross = Instantiate(prefabCross, casilla.transform.position, casilla.transform.localRotation, mapa.transform);
-        unidad.GetComponent<Unidad>().setCross(ref cross);
+        unidad.GetComponent<Agente>().setCross(ref cross);
     }
 	public void updateDiagnostico(int numeroVisitas,double milisengundos,long ticks)
     {

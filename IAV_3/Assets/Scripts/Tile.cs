@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Tile : MonoBehaviour {
+
+    
     public enum T_Terreno:int
     {
         T_CESPED = 0, T_GRAVA = 2, T_PRECIPICIO = 1, T_DESCONOCIDO = 3,
@@ -118,6 +120,7 @@ public class Tile : MonoBehaviour {
                 }
             }
         }
+        updateTile();
     }
 
     public void SetContenido(T_Contenido contenido)
@@ -138,7 +141,28 @@ public class Tile : MonoBehaviour {
                 }
             }
         }
-        
+        switch (_contenido)
+        {
+            case T_Contenido.C_NADA:
+                break;
+            case T_Contenido.C_SANGRE:
+                Instantiate(GameManager.instance.prefabSangre, transform);
+                break;
+            case T_Contenido.C_CUCHILLO:
+                Instantiate(GameManager.instance.prefabCuchillo, transform);
+                break;
+            case T_Contenido.C_CUERPO:
+                Instantiate(GameManager.instance.prefabCuerpo, transform);
+                break;
+            case T_Contenido.C_CASA:
+                Instantiate(GameManager.instance.prefabCasa, transform);
+                break;
+            case T_Contenido.C_DESCONOCIDO:
+                break;
+            default:
+                break;
+        }
+
     }
 
     public T_Terreno GetTerreno()

@@ -6,10 +6,11 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
-
     Mapa mapa;
+    Agente agent;
     Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
 	public Vector3 to;
+    Vector2Int bestOption;
     int[,] DistTo;
     Vector2Int[,] EdgeTo;
     Vector2Int UltimaCasilla;
@@ -19,7 +20,7 @@ public class PathFinder : MonoBehaviour
     void Start()
     {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-        
+        agent = GetComponent<Agente>();
     }
     // Update is called once per frame
     void Update()
@@ -38,15 +39,24 @@ public class PathFinder : MonoBehaviour
         if (!(destino.x < 0 || destino.y < 0 || destino.x >= mapa.getAncho() || destino.y >= mapa.getAlto()))
         {
 
-            if (!mapa.getOccupied(destino.y, destino.x))
-            {
-                if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + mapa.getCostOfTile(destino.y, destino.x))
+            if ( agent.GetTILE_INFO(destino.y, destino.x).frontera || agent.GetTILE_INFO(destino.y, destino.x)._Terreno != Tile.T_Terreno.T_DESCONOCIDO) {
+               
+                
+                if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio)
                 {
-                    DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + mapa.getCostOfTile(destino.y, destino.x);
+                    DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio;
                     EdgeTo[destino.y, destino.x] = origen;
-                    int h = heuristic(destino, UltimaCasilla);
-                    if (h != 0)
-                        h += DistTo[destino.y, destino.x];
+                    int h = heuristic(destino, destino);
+                    h += DistTo[destino.y, destino.x];
+                    if (agent.GetTILE_INFO(destino.y, destino.x).frontera)
+                    {
+                       if(bestOption.x == -1||DistTo[destino.y, destino.x]< DistTo[bestOption.y, bestOption.x])
+                        {
+                             bestOption= destino;
+                        }
+
+
+                    }
                     PQ.Enqueue(destino, h);
                 }
             }
@@ -72,6 +82,7 @@ public class PathFinder : MonoBehaviour
 
     public bool CalculatePath(GameObject g)
     {
+        bestOption = new Vector2Int(-1, -1);
         to = g.transform.localPosition;
         System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
         stopwatch.Start();
@@ -94,7 +105,7 @@ public class PathFinder : MonoBehaviour
 
         int k = 0;
 
-        while (PQ.Count > 0 && !caminoPosible)
+        while (PQ.Count > 0)
         {
             k++;
             Vector2Int top = PQ.Dequeue();
@@ -105,16 +116,12 @@ public class PathFinder : MonoBehaviour
                     relax(top, directions[i]);
                 }
             }
-            else
-            {
-                caminoPosible = true;
-            }
 
         }
         stopwatch.Stop();
         if (caminoPosible)
         {
-            GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
+            GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
         GameManager.instance.updateDiagnostico(caminoPosible);
 		GameManager.instance.updateDiagnostico(k,stopwatch.Elapsed.TotalMilliseconds,stopwatch.ElapsedTicks);
