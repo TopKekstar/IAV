@@ -37,12 +37,13 @@ public class Agente : MonoBehaviour {
         {
             for (int j = 0; j < mapa.anchoMapa; j++)
             {
-                TILE_INFO aux = infoMapa[i, j];
+				TILE_INFO aux;
                 aux.probCuerpo = aux.probPrecipicio = 0;
                 aux._Contenido = Tile.T_Contenido.C_DESCONOCIDO;
                 aux._Terreno = Tile.T_Terreno.T_DESCONOCIDO;
                 aux.frontera = false;
-            }
+				infoMapa [i, j] = aux;
+			}
         }
         Color color = new Color(Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f));
         GetComponent<SpriteRenderer>().color = color;
@@ -76,58 +77,46 @@ public class Agente : MonoBehaviour {
         pos.y = (int)transform.localPosition.y;
         infoMapa[pos.y, pos.x]._Terreno = mapa.getTile(pos.y, pos.x).GetTerreno();
         infoMapa[pos.y, pos.x].frontera = false;
-		Debug.Log (pos.ToString ());
 
-        for (int i = 0; i < 4; i++)
-        {
-            try
-            {
-                if(infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO)
-                    infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x].frontera = true;
+		int nVecinos=0;
+		for (int i = 0; i < 4; i++) {
+			Vector2Int vecino = pos + GameManager.instance.directions [i];
+			if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
+				if (infoMapa [vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO) {
+					infoMapa [vecino.y, vecino.x].frontera = true;
+					nVecinos++;
+				}
+			}
 				
 
-            }
-			catch (System.SystemException)
-            {
-				Debug.Log ("suu");
+            
+		}
 
-            }
-        }
-        if (infoMapa[pos.y, pos.x]._Terreno == Tile.T_Terreno.T_GRAVA)
-        {
-            int nVecinos=0;
-            for (int i = 0; i < 4; i++)
-            {
-                try
-                {
-                    if (infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x]._Terreno != Tile.T_Terreno.T_DESCONOCIDO) {
-                        nVecinos++;
-                    }
-                    
-                }
-                catch (System.SystemException)
-                {
-
-                    
-                }
-            }
-            for (int i = 0; i < nVecinos; i++)
-            {
-                try
-                {
-                    infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x].probPrecipicio += 100/nVecinos;
-
-                }
-                catch (System.NullReferenceException)
-                {
-
-
-                }
-            }
-        }
+		if (infoMapa [pos.y, pos.x]._Terreno == Tile.T_Terreno.T_GRAVA) {
+            
+			for (int i = 0; i < 4; i++) {
+				Vector2Int vecino = pos + GameManager.instance.directions [i];
+				if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
+					if (infoMapa [vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO) {
+						infoMapa [vecino.y, vecino.x].probPrecipicio += 1000 / nVecinos;
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < 4; i++) {
+				Vector2Int vecino = pos + GameManager.instance.directions [i];
+				if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
+					if (infoMapa [vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO) {
+						infoMapa [vecino.y, vecino.x].probPrecipicio /= 10;
+						infoMapa [vecino.y, vecino.x].probCuerpo /= 2;
+					}
+				}
+			}
+		}
     }
     public void setPath(Stack<Vector2Int> c)
     {
+		
         camino = c;
         from = camino.Peek();
         followPath();
@@ -145,17 +134,8 @@ public class Agente : MonoBehaviour {
         if (camino.Count > 0)
         {
             Vector2Int vector = camino.Pop();
-            if (vector != from )
-            {
-                while (camino.Count > 0)
-                {
-                    vector = camino.Pop();
-                }
-                Destroy(_cross);
-                GameManager.instance.setCurrentUnit(gameObject);
-                GameManager.instance.mueveUnidad(mapa.getTile(vector.y, vector.x).gameObject);
-            }
-            else
+
+
             {
 
                 moveTo(new Vector3(vector.x, vector.y, 0));
@@ -169,7 +149,7 @@ public class Agente : MonoBehaviour {
                     Invoke("followPath", 0.5f);
                 }
             }
-			updatePos ();
+
         }
     }
     public void setCross(ref GameObject cross)
