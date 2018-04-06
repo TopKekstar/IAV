@@ -70,8 +70,10 @@ public class PathFinder : MonoBehaviour
         queue.Push(to);
         while (to != from)
         {
+			Debug.Log (to.ToString());
             queue.Push(EdgeTo[to.y, to.x]);
-            to = EdgeTo[to.y, to.x];
+			to = EdgeTo [to.y, to.x];
+
 
         }
 
@@ -130,5 +132,47 @@ public class PathFinder : MonoBehaviour
         return (caminoPosible);
 
     }
+	public bool Explore()
+	{
+		bestOption = new Vector2Int(-1, -1);
+		System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+		stopwatch.Start();
+		PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
+		DistTo = mapa.getDistTo((int)transform.localPosition.y, (int)transform.localPosition.x);
+		EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
+		for (int i = 0; i < mapa.altoMapa; i++)
+		{
+			for (int j = 0; j < mapa.anchoMapa; j++)
+			{
+				EdgeTo[i, j] = new Vector2Int(-1, -1);
+			}
+		}
+		Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
+		mapa.setOccupied(from.y, from.x, true);
+		PQ.EnqueueWithoutDuplicates(from, 0);
+		caminoPosible = false;
+
+
+		int k = 0;
+
+		while (PQ.Count > 0)
+		{
+			k++;
+			Vector2Int top = PQ.Dequeue();
+			for (int i = 0; i < directions.Length; i++)
+				{
+					relax(top, directions[i]);
+				}
+			
+		}
+		stopwatch.Stop();
+		GetComponent<Agente>().setPath(GetPath(ref bestOption, ref from));
+		GameManager.instance.updateDiagnostico(caminoPosible);
+		GameManager.instance.updateDiagnostico(k,stopwatch.Elapsed.TotalMilliseconds,stopwatch.ElapsedTicks);
+
+
+		return (caminoPosible);
+
+	}
 
 }

@@ -22,11 +22,17 @@ public class Agente : MonoBehaviour {
     Vector2Int from;
     GameObject _cross;
     Vector2Int pos;
+	bool cuchilloFound;
+	bool fiambreFound;
+
     // Use this for initialization
     private void Start()
     {
+		cuchilloFound = false;
+		fiambreFound = false;
         mapa = GameManager.instance.mapa;
         infoMapa = new TILE_INFO[mapa.altoMapa, mapa.anchoMapa];
+		posCasa = new Vector2Int (0, 0);
         for (int i = 0; i < mapa.altoMapa; i++)
         {
             for (int j = 0; j < mapa.anchoMapa; j++)
@@ -51,8 +57,8 @@ public class Agente : MonoBehaviour {
 
     private void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
-            GameManager.instance.setCurrentUnit(gameObject);
+		if (Input.GetMouseButtonDown (0) && !GameManager.instance.editMode)
+			GetComponent<PathFinder> ().Explore ();
         if (Input.GetMouseButtonDown(1) && GameManager.instance.editMode)
         {
 
@@ -70,6 +76,7 @@ public class Agente : MonoBehaviour {
         pos.y = (int)transform.localPosition.y;
         infoMapa[pos.y, pos.x]._Terreno = mapa.getTile(pos.y, pos.x).GetTerreno();
         infoMapa[pos.y, pos.x].frontera = false;
+		Debug.Log (pos.ToString ());
 
         for (int i = 0; i < 4; i++)
         {
@@ -77,11 +84,12 @@ public class Agente : MonoBehaviour {
             {
                 if(infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO)
                     infoMapa[pos.y + GameManager.instance.directions[i].y, pos.x + GameManager.instance.directions[i].x].frontera = true;
+				
 
             }
-            catch (System.NullReferenceException)
+			catch (System.SystemException)
             {
-
+				Debug.Log ("suu");
 
             }
         }
@@ -97,7 +105,7 @@ public class Agente : MonoBehaviour {
                     }
                     
                 }
-                catch (System.NullReferenceException)
+                catch (System.SystemException)
                 {
 
                     
@@ -137,7 +145,7 @@ public class Agente : MonoBehaviour {
         if (camino.Count > 0)
         {
             Vector2Int vector = camino.Pop();
-            if (vector != from && mapa.getOccupied(vector.y, vector.x))
+            if (vector != from )
             {
                 while (camino.Count > 0)
                 {
@@ -161,6 +169,7 @@ public class Agente : MonoBehaviour {
                     Invoke("followPath", 0.5f);
                 }
             }
+			updatePos ();
         }
     }
     public void setCross(ref GameObject cross)
