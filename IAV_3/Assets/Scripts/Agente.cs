@@ -10,7 +10,13 @@ public class Agente : MonoBehaviour {
         public Tile.T_Contenido _Contenido;
         public Tile.T_Terreno _Terreno;
         public bool frontera;
+        public bool noPrecipicio;
 
+    }
+
+    public enum Agent_Status
+    {
+        SLEEPING, EXPLORING, GOING_HOME
     }
 
     
@@ -42,6 +48,7 @@ public class Agente : MonoBehaviour {
                 aux._Contenido = Tile.T_Contenido.C_DESCONOCIDO;
                 aux._Terreno = Tile.T_Terreno.T_DESCONOCIDO;
                 aux.frontera = false;
+                aux.noPrecipicio = false;
 				infoMapa [i, j] = aux;
 			}
         }
@@ -55,11 +62,15 @@ public class Agente : MonoBehaviour {
     {
 
     }
+    private void Explore()
+    {
+        GetComponent<PathFinder>().Explore();
+    }
 
     private void OnMouseOver()
     {
-		if (Input.GetMouseButtonDown (0) && !GameManager.instance.editMode)
-			GetComponent<PathFinder> ().Explore ();
+        if (Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
+            Explore();
         if (Input.GetMouseButtonDown(1) && GameManager.instance.editMode)
         {
 
@@ -77,8 +88,10 @@ public class Agente : MonoBehaviour {
         pos.y = (int)transform.localPosition.y;
         infoMapa[pos.y, pos.x]._Terreno = mapa.getTile(pos.y, pos.x).GetTerreno();
         infoMapa[pos.y, pos.x].frontera = false;
+        infoMapa[pos.y, pos.x].noPrecipicio = true;
+        infoMapa[pos.y, pos.x].probPrecipicio = 0;
 
-		int nVecinos=0;
+        int nVecinos =0;
 		for (int i = 0; i < 4; i++) {
 			Vector2Int vecino = pos + GameManager.instance.directions [i];
 			if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
@@ -86,33 +99,40 @@ public class Agente : MonoBehaviour {
 					infoMapa [vecino.y, vecino.x].frontera = true;
 					nVecinos++;
 				}
-			}
-				
-
-            
+			}            
 		}
 
-		if (infoMapa [pos.y, pos.x]._Terreno == Tile.T_Terreno.T_GRAVA) {
-            
-			for (int i = 0; i < 4; i++) {
-				Vector2Int vecino = pos + GameManager.instance.directions [i];
-				if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
-					if (infoMapa [vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO) {
-						infoMapa [vecino.y, vecino.x].probPrecipicio += 1000 / nVecinos;
-					}
-				}
-			}
-		} else {
-			for (int i = 0; i < 4; i++) {
-				Vector2Int vecino = pos + GameManager.instance.directions [i];
-				if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa) {
-					if (infoMapa [vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO) {
-						infoMapa [vecino.y, vecino.x].probPrecipicio /= 10;
-						infoMapa [vecino.y, vecino.x].probCuerpo /= 2;
-					}
-				}
-			}
-		}
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2Int vecino = pos + GameManager.instance.directions[i];
+            if (vecino.x >= 0 && vecino.x < mapa.anchoMapa && vecino.y >= 0 && vecino.y < mapa.altoMapa)
+            {
+                if (infoMapa[pos.y, pos.x]._Terreno == Tile.T_Terreno.T_GRAVA)
+                {
+                    if (infoMapa[vecino.y, vecino.x]._Terreno == Tile.T_Terreno.T_DESCONOCIDO && !infoMapa[vecino.y, vecino.x].noPrecipicio)
+                    {
+                        infoMapa[vecino.y, vecino.x].probPrecipicio += 1000 / nVecinos;
+                    }
+                }
+                else if (infoMapa[pos.y, pos.x]._Terreno == Tile.T_Terreno.T_CESPED)
+                {
+                    infoMapa[vecino.y, vecino.x].noPrecipicio = true;
+                    infoMapa[vecino.y, vecino.x].probPrecipicio = 0;
+
+                }
+
+                if (infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_SANGRE)
+                {
+                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO)
+                        infoMapa[vecino.y, vecino.x].probCuerpo -= 500 / nVecinos;
+                }
+                else if(infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_NADA)
+                {
+                    infoMapa[vecino.y, vecino.x].probPrecipicio = 0;
+                }
+            }
+        }
+        
     }
     public void setPath(Stack<Vector2Int> c)
     {

@@ -820,7 +820,7 @@ MonoBehaviour:
   limitY: 10
   targetFollow: {fileID: 0}
   targetOffset: {x: 0, y: 0, z: 0}
-  useScreenEdgeInput: 1
+  useScreenEdgeInput: 0
   screenEdgeBorder: 25
   useKeyboardInput: 1
   horizontalAxis: Horizontal

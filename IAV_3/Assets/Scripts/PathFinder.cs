@@ -43,9 +43,9 @@ public class PathFinder : MonoBehaviour
             if ( agent.GetTILE_INFO(destino.y, destino.x).frontera || agent.GetTILE_INFO(destino.y, destino.x)._Terreno != Tile.T_Terreno.T_DESCONOCIDO) {
                
                 
-                if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio+1)
+                if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio+ agent.GetTILE_INFO(destino.y, destino.x).probCuerpo + 1)
                 {
-                    DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio+1;
+                    DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + agent.GetTILE_INFO(destino.y, destino.x).probPrecipicio+ agent.GetTILE_INFO(destino.y, destino.x).probCuerpo + 1;
                     EdgeTo[destino.y, destino.x] = origen;
                     int h = heuristic(destino, destino);
                     h += DistTo[destino.y, destino.x];
