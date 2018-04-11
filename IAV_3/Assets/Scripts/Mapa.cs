@@ -28,10 +28,7 @@ public class Mapa : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
     }
-    public void setOccupied(int i,int j,bool value)
-    {
-        mapaTiles[i, j].setOccupied(value);
-    }
+   
     public void iniciarMapa()
     {
         for (int i = 0; i < altoMapa; i++)
@@ -75,22 +72,8 @@ public class Mapa : MonoBehaviour {
         }
 
     }
-    public bool getOccupied(int i, int j)
-    {
-        return mapaTiles[i, j].getOccupied();
-    }
-    public bool[,] getMarcados()
-    {
-        bool[,] marcados = new bool[altoMapa,anchoMapa];
-        for (int i = 0; i < altoMapa; i++)
-        {
-            for (int j = 0; j < anchoMapa; j++)
-            {
-                marcados[i,j] = mapaTiles[i, j].isOccupied();
-            }
-        }
-        return marcados;
-    }
+    
+    
 
     public int[,] getDistTo(int origenI, int origenJ)
     {
@@ -114,7 +97,6 @@ public class Mapa : MonoBehaviour {
         catch (System.Exception)
         {
             return nulo;
-            throw;
         }
 	}
 

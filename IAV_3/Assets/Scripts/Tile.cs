@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour {
 	int coste;
 	public int posX;
 	public int posY;
-    public bool ocupada;
+    public bool descubierta;
     bool firstIni = false;
 
 	// Use this for initialization
@@ -30,7 +30,17 @@ public class Tile : MonoBehaviour {
         
 
     }
+    
+    public void SetDescubierta(bool desc)
+    {
+        descubierta = desc;
+        updateTile();
+    }
 
+    public bool GetOcupada()
+    {
+        return descubierta;
+    }
 
     public void ini(T_Terreno terreno, int x, int y)
     {
@@ -45,39 +55,32 @@ public class Tile : MonoBehaviour {
 
     }
 
-    public bool getOccupied()
-    {
-        return ocupada;
-    }
 
-    public void setOccupied(bool value)
-    {
-        ocupada = value;
-    }
+
 
     void updateTile()
     {
         switch (_terreno)
         {
             case T_Terreno.T_CESPED:
-                GetComponent<SpriteRenderer>().color = Color.green;
+                if(descubierta)
+                    GetComponent<SpriteRenderer>().color = Color.green;
                 coste = 1;
-                ocupada = false;
                 break;
             case T_Terreno.T_GRAVA:
-                GetComponent<SpriteRenderer>().color = Color.grey;
+                if (descubierta)
+                    GetComponent<SpriteRenderer>().color = Color.grey;
                 coste = 2;
-                ocupada = false;
                 break;
             case T_Terreno.T_PRECIPICIO:
-                GetComponent<SpriteRenderer>().color = Color.black;
-                ocupada = true;
                 break;
             case T_Terreno.T_DESCONOCIDO:
                 break;
             default:
                 break;
         }
+        if (!descubierta)
+            GetComponent<SpriteRenderer>().color = Color.black;
 
     }
 	// Update is called once per frame
@@ -174,11 +177,6 @@ public class Tile : MonoBehaviour {
     {
         return _contenido;
     }
-    public bool isOccupied()
-    {
-        return ocupada;
-    }
-
     public int getCost() {
         return coste;
     }
