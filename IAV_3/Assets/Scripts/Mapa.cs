@@ -41,39 +41,68 @@ public class Mapa : MonoBehaviour {
         mapaTiles[0,0].SetContenido(Tile.T_Contenido.C_CASA);
         int y = Random.Range(2, altoMapa);
         int x = Random.Range(2, anchoMapa);
-        mapaTiles[y, x].SetContenido(Tile.T_Contenido.C_CUERPO);
 
-        int xCuchillo = Random.Range((x-2<0)?0:x-2, (x + 2 >= anchoMapa) ?anchoMapa:x+2);
-        int yCuchillo = Random.Range((y - 2 < 0) ? 0 : y - 2, (y + 2 >= altoMapa) ? altoMapa : x + 2);
-        mapaTiles[yCuchillo, xCuchillo].SetContenido(Tile.T_Contenido.C_CUCHILLO);
+
+        mapaTiles[y, x].SetContenido(Tile.T_Contenido.C_CUERPO);
+        List<Tile> list = GetVecinas(y, x);
+        for (int i = 0; i < list.Count; i++)
+        {
+            list[i].SetContenido(Tile.T_Contenido.C_SANGRE);
+
+        }
+        Tile tile = list[Random.Range(0, list.Count)];
+        list = GetVecinas(tile.posY, tile.posX);
+        list.Remove(getTile(y, x));
+        tile = list[Random.Range(0, list.Count)];
+        tile.SetContenido(Tile.T_Contenido.C_CUCHILLO);
+        
+        
         int nPrecipicios = 3;
         for (int i = 0; i < nPrecipicios; i++)
         {
             y = Random.Range(1, altoMapa);
             x = Random.Range(1, anchoMapa);
-            if (mapaTiles[y, x].GetContenido()!= Tile.T_Contenido.C_CUERPO && mapaTiles[y, x].GetContenido() != Tile.T_Contenido.C_CUCHILLO)
+            if (mapaTiles[y, x].GetContenido() != Tile.T_Contenido.C_CUERPO && mapaTiles[y, x].GetContenido() != Tile.T_Contenido.C_CUCHILLO
+                && mapaTiles[y, x].GetContenido() != Tile.T_Contenido.C_SANGRE)
+            {
                 mapaTiles[y, x].SetTerreno(Tile.T_Terreno.T_PRECIPICIO);
-        }
-        Instantiate(GameManager.instance.prefabUnidad, mapaTiles[0, 0].transform.position+Vector3.back*2, mapaTiles[0, 0].transform.rotation, transform);
+                list = GetVecinas(y, x);
+                for (int j = 0; j < list.Count; j++)
+                {
+                    list[j].SetTerreno(Tile.T_Terreno.T_GRAVA);
 
+                }
+            }
+        }
+        GameObject agente = Instantiate(GameManager.instance.prefabUnidad, mapaTiles[0, 0].transform.position+Vector3.back*2, mapaTiles[0, 0].transform.rotation, transform);
+        GameManager.instance.setCurrentUnit(agente);
         
 
 
     }
 
-    public void iniciarAleatorio()
+    List<Tile> GetVecinas(int iY,int jX)
     {
-        for (int i = 0; i < altoMapa; i++)
+        List<Tile> vecinas = new List<Tile>();
+        for (int i = 0; i < 4; i++)
         {
-            for (int j = 0; j < anchoMapa; j++)
+            int y = iY + GameManager.instance.directions[i].y;
+            int x = jX + GameManager.instance.directions[i].x;
+            if(x >= anchoMapa || x < 0||y >= altoMapa || y < 0)
             {
-				
-            }
-        }
 
+            }
+            else
+                vecinas.Add(getTile(y, x));
+            
+
+        }
+        return vecinas;
     }
-    
-    
+
+
+
+
 
     public int[,] getDistTo(int origenI, int origenJ)
     {

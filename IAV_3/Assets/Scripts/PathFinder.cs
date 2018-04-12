@@ -47,8 +47,12 @@ public class PathFinder : MonoBehaviour
                 {
                     DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + 1;
                     EdgeTo[destino.y, destino.x] = origen;
-                    int h = heuristic(destino, destino);
-                    h += DistTo[destino.y, destino.x];
+                    int h = heuristic(destino, UltimaCasilla);
+                    if (h != 0)
+                        h += DistTo[destino.y, destino.x];
+                    else
+                        h = 0;
+
                     PQ.Enqueue(destino, h);
 
                 }

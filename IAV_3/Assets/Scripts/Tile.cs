@@ -44,6 +44,11 @@ public class Tile : MonoBehaviour {
 
     public void ini(T_Terreno terreno, int x, int y)
     {
+        descubierta = false;
+        if(_contenido != T_Contenido.C_NADA)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
         _contenido = T_Contenido.C_NADA;
         posX = x;
         posY = y;
@@ -63,13 +68,11 @@ public class Tile : MonoBehaviour {
         switch (_terreno)
         {
             case T_Terreno.T_CESPED:
-                if(descubierta)
-                    GetComponent<SpriteRenderer>().color = Color.green;
+                GetComponent<SpriteRenderer>().color = Color.green;
                 coste = 1;
                 break;
             case T_Terreno.T_GRAVA:
-                if (descubierta)
-                    GetComponent<SpriteRenderer>().color = Color.grey;
+                GetComponent<SpriteRenderer>().color = Color.grey;
                 coste = 2;
                 break;
             case T_Terreno.T_PRECIPICIO:
@@ -106,44 +109,13 @@ public class Tile : MonoBehaviour {
         if (_terreno != T_Terreno.T_PRECIPICIO)
         {
             _terreno = terreno;
-            if (_terreno == T_Terreno.T_PRECIPICIO)
-            {
-
-                for (int i = 0; i < 4; i++)
-                {
-                    try
-                    {
-                        
-                        GameManager.instance.mapa.getTile(posY + GameManager.instance.directions[i].y, posX + GameManager.instance.directions[i].x).SetTerreno(T_Terreno.T_GRAVA) ;
-                    }
-                    catch (System.NullReferenceException )
-                    {
-
-                    }
-                }
-            }
         }
         updateTile();
     }
-
+    
     public void SetContenido(T_Contenido contenido)
     {
         _contenido = contenido;
-        if (_contenido == T_Contenido.C_CUERPO)
-        {
-
-            for (int i = 0; i < 4; i++)
-            {
-                try
-                { 
-                    GameManager.instance.mapa.getTile(posY + GameManager.instance.directions[i].y, posX + GameManager.instance.directions[i].x).SetContenido(T_Contenido.C_SANGRE);
-                }
-                catch (System.NullReferenceException)
-                {
-
-                }
-            }
-        }
         switch (_contenido)
         {
             case T_Contenido.C_NADA:

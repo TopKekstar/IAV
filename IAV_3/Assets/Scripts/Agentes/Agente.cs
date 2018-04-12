@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Agente : MonoBehaviour {
+
     public struct TILE_INFO
     {
         public int probPrecipicio;
@@ -18,28 +19,30 @@ public class Agente : MonoBehaviour {
         }
 
     }
-
     public enum Agent_Status
     {
         SLEEPING, EXPLORING, GOING_HOME
     }
 
 
-    List<Vector2Int> frontera;
-    TILE_INFO[,] infoMapa;
-    Vector2Int posCasa;
-    Mapa mapa;
-    Stack<Vector2Int> camino;
-    Vector2Int from;
-    GameObject _cross;
-    Vector2Int pos;
-	bool cuchilloFound;
-	bool fiambreFound;
-    bool casoResuelto;
+    
+    protected Agent_Status status;
+    protected List<Vector2Int> frontera;
+    protected TILE_INFO[,] infoMapa;
+    protected Vector2Int posCasa;
+    protected Mapa mapa;
+    protected Stack<Vector2Int> camino;
+    protected Vector2Int from;
+    protected GameObject _cross;
+    protected Vector2Int pos;
+    protected bool cuchilloFound;
+    protected bool fiambreFound;
+    protected bool casoResuelto;
 
     // Use this for initialization
-    private void Start()
+    protected void Start()
     {
+        status = Agent_Status.SLEEPING;
 		cuchilloFound = false;
 		fiambreFound = false;
         casoResuelto = false;
@@ -68,25 +71,39 @@ public class Agente : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
+    protected void Update()
     {
-
+        if (status == Agent_Status.SLEEPING)
+        {
+            status = Agent_Status.EXPLORING;
+            GameManager.instance.ActualizarInfo("Explorando");
+            Invoke("Explore", 0.5f);
+        }
     }
-    
-    private void Explore()
+
+    protected int distanciaJugador(Vector2Int vector2Int)
+    {
+        return System.Math.Abs(vector2Int.x - pos.x) + System.Math.Abs(vector2Int.y - pos.y);
+    }
+
+    protected virtual void Explore()
     {
         if (!(cuchilloFound && fiambreFound))
         {
             Vector2Int bestOption = new Vector2Int(-1, -1);
             for (int i = 0; i < frontera.Count; i++)
             {
-                if (bestOption.x == -1 )
+                if (bestOption.x == -1)
                 {
                     bestOption = frontera[i];
                 }
-                else if ( infoMapa[bestOption.y, bestOption.x].getRisk() == infoMapa[frontera[i].y, frontera[i].x].getRisk())
+                else if (infoMapa[bestOption.y, bestOption.x].getRisk() == infoMapa[frontera[i].y, frontera[i].x].getRisk())
                 {
-                    if(Random.Range(0,10)>6)
+                    if ((bestOption.x == 0 && frontera[i].x != 0) || (bestOption.y == 0 && frontera[i].y != 0))
+                        bestOption = frontera[i];
+                    if ((bestOption.x == mapa.anchoMapa - 1 && frontera[i].x != mapa.anchoMapa - 1) || (bestOption.y == mapa.altoMapa - 1 && frontera[i].y != mapa.altoMapa - 1))
+                        bestOption = frontera[i];
+                    if (distanciaJugador(bestOption) > distanciaJugador(frontera[i]))
                         bestOption = frontera[i];
 
                 }
@@ -100,28 +117,17 @@ public class Agente : MonoBehaviour {
         }
         else if (!casoResuelto)
         {
-            Debug.Log("vuelta a casa");
             GetComponent<PathFinder>().CalculatePath(posCasa);
             casoResuelto = true;
         }
     }
 
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
-            Explore();
-        if (Input.GetMouseButtonDown(1) && GameManager.instance.editMode)
-        {
 
-            GameManager.instance.borraUnidad(gameObject);
-
-        }
-    }
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         Destroy(_cross);
     }
-    void updatePos()
+    protected void updatePos()
     {
         pos.x = (int)transform.localPosition.x;
         pos.y = (int)transform.localPosition.y;
@@ -148,6 +154,18 @@ public class Agente : MonoBehaviour {
             default:
                 break;
         }
+        if(cuchilloFound && fiambreFound && casoResuelto)
+        {
+            GameManager.instance.ActualizarInfo("Volviendo a casa");
+        }
+        else if (cuchilloFound)
+        {
+            GameManager.instance.ActualizarInfo("Encontrado Cuchillo");
+        }
+        else if (fiambreFound)
+        {
+            GameManager.instance.ActualizarInfo("Cuerpo Encontrado");
+        }
 
         int nVecinos =0;
 		for (int i = 0; i < 4; i++) {
@@ -158,7 +176,7 @@ public class Agente : MonoBehaviour {
 					nVecinos++;
                     if (!frontera.Contains(vecino))
                     {
-                        Debug.Log("metio");
+                        
                         frontera.Add(vecino);
                     }
 				}
@@ -194,6 +212,16 @@ public class Agente : MonoBehaviour {
 
                     }
                 }
+                else if (infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_CUCHILLO)
+                {
+                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO && !fiambreFound)
+                        infoMapa[vecino.y, vecino.x].probCuerpo -= 250 / nVecinos;
+                    else if (fiambreFound)
+                    {
+                        infoMapa[vecino.y, vecino.x].probCuerpo = 0;
+
+                    }
+                }
                 else  if (infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_CUERPO)
                 {
                     if (fiambreFound)
@@ -204,11 +232,15 @@ public class Agente : MonoBehaviour {
                 }
                 else if(infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_NADA)
                 {
-                    infoMapa[vecino.y, vecino.x].probCuerpo = 0;
-                    infoMapa[vecino.y, vecino.x].noCuerpo = true;
+                    
 
                 }
             }
+        }
+        if (infoMapa[pos.y, pos.x]._Terreno == Tile.T_Terreno.T_PRECIPICIO)
+        {
+            GameManager.instance.derrota();
+            casoResuelto = cuchilloFound= fiambreFound= true;
         }
         
     }
@@ -220,7 +252,7 @@ public class Agente : MonoBehaviour {
         followPath();
 
     }
-    void moveTo(Vector3 v)
+    protected void moveTo(Vector3 v)
     {
         transform.Translate(v - transform.localPosition, transform);
         updatePos();

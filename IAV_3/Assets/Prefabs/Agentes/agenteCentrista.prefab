@@ -20,11 +20,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4936456775536476}
   - component: {fileID: 212004138626265880}
-  - component: {fileID: 114844852036901412}
   - component: {fileID: 114007797293409074}
   - component: {fileID: 61310519469623194}
+  - component: {fileID: 114393801645411098}
   m_Layer: 0
-  m_Name: agente
+  m_Name: agenteCentrista
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   to: {x: 0, y: 0, z: 0}
---- !u!114 &114844852036901412
+--- !u!114 &114393801645411098
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -88,7 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1284628056230136}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e63549b6beac47459148dc2c0cc679e, type: 3}
+  m_Script: {fileID: 11500000, guid: 21e2e6888ac71ea4abd8bc3b6e3c93c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212004138626265880

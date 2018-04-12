@@ -1,16 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 public class GameManager : MonoBehaviour {
-    
+
     public Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
     public static GameManager instance;
 
 
     public RTS_Cam.RTS_Camera camara;
-    public GameObject unidadActual;
     public GameObject prefabUnidad;
+
+    public GameObject agenteNormal;
+    public GameObject agenteAleatorio;
+    public GameObject agenteDespistado;
+    public GameObject agenteCentrista;
+    public GameObject agenteMediana;
+
+
+
+
     public GameObject prefabCross;
+
+    public GameObject unidadActual;
 
 
     public bool editMode;
@@ -53,11 +66,20 @@ public class GameManager : MonoBehaviour {
             Destroy(listaUnidades[i]);
         }
     }
-
+    public void derrota()
+    {
+        ActualizarInfo( "Se ha caido por el borde");
+        Invoke("reiniciaMapa",2.5f);
+    }
     public void reiniciaMapa()
     {
-        borraUnidades();
-        mapa.iniciarAleatorio();
+        borraUnidad(unidadActual);
+        mapa.iniciarMapa();
+    }
+
+    public void ActualizarInfo(string estado)
+    {
+        Informacion.text = estado;
     }
 	// Update is called once per frame
 	void Update () {
@@ -79,16 +101,7 @@ public class GameManager : MonoBehaviour {
         {
 			instrucciones.SetActive(!instrucciones.gameObject.active);
         }
-		if (Input.GetKeyUp(KeyCode.R))
-		{
-			camara.ResetTarget ();
-			Informacion.text = "NULL";
-			Informacion.color = Color.white;
-			Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = Color.black;
-			unidadActual = null;
-            diagnostico.text = "";
-		}
-        if (Input.GetKeyUp(KeyCode.Q))
+		if (Input.GetKeyUp(KeyCode.Q))
         {
             reiniciaMapa();
         }
@@ -102,9 +115,6 @@ public class GameManager : MonoBehaviour {
     public void setCurrentUnit(GameObject unidad)
     {
         unidadActual = unidad;
-        Debug.Log("suu");
-        
-        Informacion.text = "unidad █ ";
         Informacion.color = unidadActual.GetComponent<SpriteRenderer>().color;
         Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = new Color(1.0f - Informacion.color.r, 1.0f - Informacion.color.g, 1.0f - Informacion.color.b);
     }
@@ -136,12 +146,47 @@ public class GameManager : MonoBehaviour {
     }
 	public void updateDiagnostico(int numeroVisitas,double milisengundos,long ticks)
     {
-        diagnostico.text += "Ha visitado " + numeroVisitas.ToString() + " casillas\nHa necesitado "+ milisengundos.ToString() + " ms";
+        diagnostico.text +="Ha necesitado "+ milisengundos.ToString() + " ms";
         diagnostico.text += "\nHa necesitado \b"+ ticks.ToString() + " ticks";
     }
     public void updateDiagnostico(bool conseguido)
     {
         diagnostico.text = (conseguido)?"Ruta posible\n": "Ruta imposible\n";
         
+    }
+
+    public void SetAgenteAleatorio()
+    {
+        modoActual.text = "Agente Aleatorio";
+        prefabUnidad = agenteAleatorio;
+        reiniciaMapa();
+    }
+    public void SetAgenteNormal()
+    {
+        modoActual.text = "Agente Normal";
+        prefabUnidad = agenteNormal;
+        reiniciaMapa();
+
+    }
+    public void SetAgenteDespistado()
+    {
+        modoActual.text = "Agente Despistado";
+        prefabUnidad = agenteDespistado;
+        reiniciaMapa();
+
+    }
+    public void SetAgenteCentrista()
+    {
+        modoActual.text = "Agente Centrista";
+        prefabUnidad = agenteCentrista;
+        reiniciaMapa();
+
+    }
+    public void SetAgenteMediana()
+    {
+        modoActual.text = "Agente Mediana";
+        prefabUnidad = agenteMediana;
+        reiniciaMapa();
+
     }
 }
