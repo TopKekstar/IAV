@@ -57,7 +57,7 @@ public class Mapa : MonoBehaviour {
         tile.SetContenido(Tile.T_Contenido.C_CUCHILLO);
         
         
-        int nPrecipicios = 3;
+        int nPrecipicios = 6;
         for (int i = 0; i < nPrecipicios; i++)
         {
             y = Random.Range(1, altoMapa);

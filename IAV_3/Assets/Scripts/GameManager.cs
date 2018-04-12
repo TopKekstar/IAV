@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
     public GameObject agenteDespistado;
     public GameObject agenteCentrista;
     public GameObject agenteMediana;
-
+  
 
 
 
@@ -144,10 +144,9 @@ public class GameManager : MonoBehaviour {
         GameObject cross = Instantiate(prefabCross, casilla.transform.position, casilla.transform.localRotation, mapa.transform);
         unidad.GetComponent<Agente>().setCross(ref cross);
     }
-	public void updateDiagnostico(int numeroVisitas,double milisengundos,long ticks)
+	public void updateDiagnostico(int numeroPasos)
     {
-        diagnostico.text +="Ha necesitado "+ milisengundos.ToString() + " ms";
-        diagnostico.text += "\nHa necesitado \b"+ ticks.ToString() + " ticks";
+        diagnostico.text = "Lleva " + numeroPasos + " Pasos";
     }
     public void updateDiagnostico(bool conseguido)
     {

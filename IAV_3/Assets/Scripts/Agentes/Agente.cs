@@ -38,10 +38,12 @@ public class Agente : MonoBehaviour {
     protected bool cuchilloFound;
     protected bool fiambreFound;
     protected bool casoResuelto;
+    int pasos;
 
     // Use this for initialization
     protected void Start()
     {
+        pasos = 0;
         status = Agent_Status.SLEEPING;
 		cuchilloFound = false;
 		fiambreFound = false;
@@ -204,9 +206,9 @@ public class Agente : MonoBehaviour {
 
                 if (infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_SANGRE)
                 {
-                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO&&!fiambreFound)
+                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO)
                         infoMapa[vecino.y, vecino.x].probCuerpo -= 500 / nVecinos;
-                    else if (fiambreFound)
+                    if (fiambreFound)
                     {
                         infoMapa[vecino.y, vecino.x].probCuerpo = 0;
 
@@ -214,9 +216,9 @@ public class Agente : MonoBehaviour {
                 }
                 else if (infoMapa[pos.y, pos.x]._Contenido == Tile.T_Contenido.C_CUCHILLO)
                 {
-                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO && !fiambreFound)
+                    if (infoMapa[vecino.y, vecino.x]._Contenido == Tile.T_Contenido.C_DESCONOCIDO )
                         infoMapa[vecino.y, vecino.x].probCuerpo -= 250 / nVecinos;
-                    else if (fiambreFound)
+                    if (fiambreFound)
                     {
                         infoMapa[vecino.y, vecino.x].probCuerpo = 0;
 
@@ -255,6 +257,7 @@ public class Agente : MonoBehaviour {
     protected void moveTo(Vector3 v)
     {
         transform.Translate(v - transform.localPosition, transform);
+        
         updatePos();
     }
     public void followPath()
@@ -276,8 +279,11 @@ public class Agente : MonoBehaviour {
                 }
                 else
                 {
+                    pasos++;
+                    GameManager.instance.updateDiagnostico(pasos);
                     Invoke("followPath", 0.5f);
                 }
+                
             }
 
         }

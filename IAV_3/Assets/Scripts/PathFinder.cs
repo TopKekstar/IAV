@@ -123,8 +123,7 @@ public class PathFinder : MonoBehaviour
         {
             GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
-        GameManager.instance.updateDiagnostico(caminoPosible);
-        GameManager.instance.updateDiagnostico(k, stopwatch.Elapsed.TotalMilliseconds, stopwatch.ElapsedTicks);
+        
 
 
         return (caminoPosible);
@@ -178,9 +177,7 @@ public class PathFinder : MonoBehaviour
         {
             GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
         }
-        GameManager.instance.updateDiagnostico(caminoPosible);
-		GameManager.instance.updateDiagnostico(k,stopwatch.Elapsed.TotalMilliseconds,stopwatch.ElapsedTicks);
-
+       
 
         return (caminoPosible);
 
