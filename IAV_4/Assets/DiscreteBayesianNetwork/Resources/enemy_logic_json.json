@@ -1,0 +1,66 @@
+{
+  "nodes": [{
+    "name": "brave",
+    "domain": ["True", "False"],
+    "parents": [],
+    "values": [0.5, 0.5]
+  }, {
+    "name": "enemy_amount",
+    "domain": ["NoEnemy", "Underwhelm", "Level", "Overwhelm"],
+    "parents": [],
+    "values": [0.25, 0.25, 0.25, 0.25]
+  }, {
+    "name": "cover_type",
+    "domain": ["No_Cover", "Half_Cover", "Full_Cover"],
+    "parents": [],
+    "values": [0.5, 0.25, 0.25]
+  }, {
+    "name": "fight",
+    "domain": ["True", "False"],
+    "parents": ["enemy_amount", "brave", "cover_type"],
+    "values": [0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.99, 0.01, 
+    	0.999, 0.001, 
+    	1.0, 0.0, 
+    	0.5, 0.5, 
+    	0.7, 0.3, 
+    	0.9, 0.1, 
+    	0.7, 0.3, 
+    	0.8, 0.2, 
+    	0.9, 0.1, 
+    	0.3, 0.7, 
+    	0.4, 0.6, 
+    	0.5, 0.5, 
+    	0.4, 0.6, 
+    	0.5, 0.5, 
+    	0.6, 0.4, 
+    	0.1, 0.9, 
+    	0.2, 0.8, 
+    	0.3, 0.7]
+  }, {
+    "name": "run_away",
+    "domain": ["True", "False"],
+    "parents": ["enemy_amount", "fight", "brave"],
+    "values": [0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.01, 0.99, 
+    	0.2, 0.8, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.2, 0.8, 
+    	0.4, 0.6, 
+    	0.0, 1.0, 
+    	0.0, 1.0, 
+    	0.5, 0.5, 
+    	0.9, 0.1]
+  }]
+}

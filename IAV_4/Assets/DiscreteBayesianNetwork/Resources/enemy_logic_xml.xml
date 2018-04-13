@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<cpt id="brave">
+			<state id="True" />
+			<state id="False" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="enemy_amount">
+			<state id="NoEnemy" />
+			<state id="Underwhelm" />
+			<state id="Level" />
+			<state id="Overwhelm" />
+			<probabilities>0.25 0.25 0.25 0.25</probabilities>
+		</cpt>
+		<cpt id="cover_type">
+			<state id="No_Cover" />
+			<state id="Half_Cover" />
+			<state id="Full_Cover" />
+			<probabilities>0.5 0.25 0.25</probabilities>
+		</cpt>
+		<cpt id="fight">
+			<state id="True" />
+			<state id="False" />
+			<parents>enemy_amount brave cover_type</parents>
+			<probabilities>0 1 0 1 0 1 0 1 0 1 0 1 0.99 0.01 0.999 0.001 1 0 0.5 0.5 0.7 0.3 0.9 0.1 0.7 0.3 0.8 0.2 0.9 0.1 0.3 0.7 0.4 0.6 0.5 0.5 0.4 0.6 0.5 0.5 0.6 0.4 0.1 0.9 0.2 0.8 0.3 0.7</probabilities>
+		</cpt>
+		<cpt id="run_away">
+			<state id="True" />
+			<state id="False" />
+			<parents>enemy_amount fight brave</parents>
+			<probabilities>0 1 0 1 0 1 0 1 0 1 0 1 0.01 0.99 0.2 0.8 0 1 0 1 0.2 0.8 0.4 0.6 0 1 0 1 0.5 0.5 0.9 0.1</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.5590.0" name="Network1" faultnameformat="nodestate">
+			<node id="brave">
+				<name>brave</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>146 277 254 325</position>
+			</node>
+			<node id="enemy_amount">
+				<name>enemy_amount</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>519 246 604 295</position>
+			</node>
+			<node id="fight">
+				<name>fight</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>321 245 407 289</position>
+			</node>
+			<node id="cover_type">
+				<name>cover_type</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>243 146 337 195</position>
+			</node>
+			<node id="run_away">
+				<name>run_away</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>328 348 415 396</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>
