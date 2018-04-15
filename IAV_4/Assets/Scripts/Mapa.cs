@@ -8,7 +8,6 @@ public class Mapa : MonoBehaviour {
 	public int anchoMapa;
 	public int altoMapa;
     public int nRocasMax;
-    bool firstIni;
 	Tile[,] mapaTiles;
     Tile nulo;
 	// Use this for initialization

@@ -7,13 +7,10 @@ using UnityEngine;
 public class PathFinder : MonoBehaviour
 {
     Mapa mapa;
-    Agente agent;
     public static Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
 	public Vector3 to;
-    Vector2Int bestOption;
     int[,] DistTo;
     Vector2Int[,] EdgeTo;
-    bool[,] marcados;
 
     Vector2Int UltimaCasilla;
     bool caminoPosible;
@@ -22,8 +19,6 @@ public class PathFinder : MonoBehaviour
     void Start()
     {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-        agent = GetComponent<Agente>();
-		
     }
     // Update is called once per frame
     void Update()
@@ -78,7 +73,7 @@ public class PathFinder : MonoBehaviour
         return queue;
     }
 
-    public bool CalculatePath(Vector2Int casilla)
+    public Stack<Vector2Int> CalculatePath(Vector2Int casilla)
     {
 
         UltimaCasilla = new Vector2Int((int)casilla.x, (int)casilla.y);
@@ -116,14 +111,10 @@ public class PathFinder : MonoBehaviour
 
         }
 
-        if (caminoPosible)
-        {
-            GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
-        }
-        
 
 
-        return (caminoPosible);
+
+        return GetPath(ref UltimaCasilla, ref from);
 
     }
 

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public GameObject Heroe;
     public GameObject Refugio;
 
+    public bool Dia { get; set; }
 
     public bool editMode;
     public Mapa mapa;
@@ -40,6 +41,8 @@ public class GameManager : MonoBehaviour {
 
     private void Awake()
     {
+        
+        Dia = true;
         colocar = null;
         Refugio = null;
         Heroe = null;

@@ -13,13 +13,11 @@ public class Agente : MonoBehaviour {
 
     
     protected Agent_Status status;
-    protected List<Vector2Int> frontera;
 
-    protected Vector2Int posCasa;
+
     protected Mapa mapa;
     protected Stack<Vector2Int> camino;
     protected Vector2Int from;
-    protected GameObject _cross;
     protected Vector2Int pos;
     protected bool cuchilloFound;
     protected bool fiambreFound;
@@ -33,9 +31,6 @@ public class Agente : MonoBehaviour {
 		fiambreFound = false;
         casoResuelto = false;
         mapa = GetComponentInParent<Mapa>();
-       
-        frontera = new List<Vector2Int>();
-		posCasa = new Vector2Int (0, 0);
         
         updatePos();
         mapa.getTile(pos.y, pos.x).SetDescubierta(true);
@@ -44,12 +39,7 @@ public class Agente : MonoBehaviour {
     // Update is called once per frame
     protected void Update()
     {
-        if (status == Agent_Status.SLEEPING)
-        {
-            status = Agent_Status.EXPLORING;
-            
-            Invoke("Explore", 0.5f);
-        }
+       
     }
 
     protected int distanciaJugador(Vector2Int vector2Int)
@@ -65,7 +55,6 @@ public class Agente : MonoBehaviour {
 
     protected void OnDestroy()
     {
-        Destroy(_cross);
     }
     protected void updatePos()
     {
@@ -98,7 +87,6 @@ public class Agente : MonoBehaviour {
                 moveTo(new Vector3(vector.x, vector.y, 0));
                 if (camino.Count == 0)
                 {
-                    Destroy(_cross);
                     Explore();
                     mapa.getTile(pos.y, pos.x).SetDescubierta(true);
                 }
@@ -113,8 +101,7 @@ public class Agente : MonoBehaviour {
     }
     public void setCross(ref GameObject cross)
     {
-        _cross = cross;
-        _cross.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
+      
     }
 
    
