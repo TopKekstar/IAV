@@ -8,7 +8,7 @@ public class PathFinder : MonoBehaviour
 {
     Mapa mapa;
     Agente agent;
-    Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
+    public static Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
 	public Vector3 to;
     Vector2Int bestOption;
     int[,] DistTo;
@@ -41,8 +41,7 @@ public class PathFinder : MonoBehaviour
         Vector2Int destino = origen + direccion;
         if (!(destino.x < 0 || destino.y < 0 || destino.x >= mapa.getAncho() || destino.y >= mapa.getAlto()))
         {
-            if (agent.GetTILE_INFO(destino.y, destino.x)._Terreno != Tile.T_Terreno.T_DESCONOCIDO || destino == UltimaCasilla)
-            {
+            
                 if (DistTo[destino.y, destino.x] > DistTo[origen.y, origen.x] + 1)
                 {
                     DistTo[destino.y, destino.x] = DistTo[origen.y, origen.x] + 1;
@@ -56,7 +55,7 @@ public class PathFinder : MonoBehaviour
                     PQ.Enqueue(destino, h);
 
                 }
-            }
+            
         }
     }
 
@@ -81,9 +80,7 @@ public class PathFinder : MonoBehaviour
 
     public bool CalculatePath(Vector2Int casilla)
     {
-        bestOption = new Vector2Int(-1, -1);
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-        stopwatch.Start();
+
         UltimaCasilla = new Vector2Int((int)casilla.x, (int)casilla.y);
         PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
         Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
@@ -118,7 +115,7 @@ public class PathFinder : MonoBehaviour
             }
 
         }
-        stopwatch.Stop();
+
         if (caminoPosible)
         {
             GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
@@ -130,58 +127,7 @@ public class PathFinder : MonoBehaviour
 
     }
 
-    public bool CalculatePath(GameObject g)
-    {
-        bestOption = new Vector2Int(-1, -1);
-        to = g.transform.localPosition;
-        System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-        stopwatch.Start();
-        UltimaCasilla = new Vector2Int((int)to.x, (int)to.y);
-        PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
-        DistTo = mapa.getDistTo((int)transform.localPosition.y, (int)transform.localPosition.x);
-        EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
-        for (int i = 0; i < mapa.altoMapa; i++)
-        {
-            for (int j = 0; j < mapa.anchoMapa; j++)
-            {
-                EdgeTo[i, j] = new Vector2Int(-1, -1);
-            }
-        }
-        Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
-
-        PQ.EnqueueWithoutDuplicates(from, 0);
-        caminoPosible = false;
-
-
-        int k = 0;
-
-        while (PQ.Count > 0)
-        {
-            k++;
-            Vector2Int top = PQ.Dequeue();
-            if (top != UltimaCasilla)
-            {
-                for (int i = 0; i < directions.Length; i++)
-                {
-                    relax(top, directions[i]);
-                }
-            }
-            else
-            {
-                caminoPosible = true;
-            }
-
-        }
-        stopwatch.Stop();
-        if (caminoPosible)
-        {
-            GetComponent<Agente>().setPath(GetPath(ref UltimaCasilla, ref from));
-        }
-       
-
-        return (caminoPosible);
-
-    }
+    
 	
 
 }

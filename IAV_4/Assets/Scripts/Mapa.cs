@@ -50,8 +50,8 @@ public class Mapa : MonoBehaviour {
         List<Tile> vecinas = new List<Tile>();
         for (int i = 0; i < 4; i++)
         {
-            int y = iY + GameManager.instance.directions[i].y;
-            int x = jX + GameManager.instance.directions[i].x;
+            int y = iY + PathFinder.directions[i].y;
+            int x = jX + PathFinder.directions[i].x;
             if(x >= anchoMapa || x < 0||y >= altoMapa || y < 0)
             {
 
@@ -93,10 +93,7 @@ public class Mapa : MonoBehaviour {
         }
 	}
 
-    public int getCostOfTile(int i,int j)
-    {
-        return mapaTiles[i, j].getCost();
-    }
+   
     public int getAlto()
     {
         return altoMapa;

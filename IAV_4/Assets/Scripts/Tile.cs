@@ -53,6 +53,16 @@ public class Tile : MonoBehaviour {
         firstIni = true;
 
     }
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (GameManager.instance.editMode)
+            {
+                GameManager.instance.ColocarObjeto(position);
+            }
+        }
+    }
 
     public Vector2Int GetPosition()
     {

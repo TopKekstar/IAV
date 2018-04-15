@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4936456775536476}
   - component: {fileID: 212004138626265880}
   m_Layer: 0
-  m_Name: casa
+  m_Name: zombi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c707b5beeecc19a479d9c3eb3c3e7dd7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fb3e5e822afd0c144bd870b9d4b90d35, type: 3}
+  m_Color: {r: 0, g: 1, b: 0.42068958, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

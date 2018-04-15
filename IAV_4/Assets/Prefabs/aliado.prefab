@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4936456775536476}
   - component: {fileID: 212004138626265880}
   m_Layer: 0
-  m_Name: cuerpo
+  m_Name: aliado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

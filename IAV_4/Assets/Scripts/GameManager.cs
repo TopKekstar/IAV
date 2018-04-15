@@ -10,20 +10,20 @@ public class GameManager : MonoBehaviour {
 
 
     public RTS_Cam.RTS_Camera camara;
+
     public GameObject prefabUnidad;
-
-    public GameObject agenteNormal;
-    public GameObject agenteAleatorio;
-    public GameObject agenteDespistado;
-    public GameObject agenteCentrista;
-    public GameObject agenteMediana;
-  
+    public GameObject prefabZombi;
+    public GameObject prefabAliado;
+    public GameObject prefabRefugio;
 
 
-
-    public GameObject prefabCross;
 
     public GameObject unidadActual;
+
+    public GameObject colocar;
+
+    public GameObject Heroe;
+    public GameObject Refugio;
 
 
     public bool editMode;
@@ -33,15 +33,16 @@ public class GameManager : MonoBehaviour {
     public GameObject instrucciones;
     public UnityEngine.UI.Text diagnostico;
     public List<GameObject> listaUnidades;
+    public List<GameObject> zombies;
 
-    public GameObject prefabCuchillo;
-    public GameObject prefabCuerpo;
-    public GameObject prefabCasa;
-    public GameObject prefabSangre;
+
 
 
     private void Awake()
     {
+        colocar = null;
+        Refugio = null;
+        Heroe = null;
         instance = this;
         editMode = false;
     }
@@ -97,10 +98,6 @@ public class GameManager : MonoBehaviour {
             }
 
         }
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-			instrucciones.SetActive(!instrucciones.gameObject.active);
-        }
 		if (Input.GetKeyUp(KeyCode.Q))
         {
             reiniciaMapa();
@@ -119,30 +116,9 @@ public class GameManager : MonoBehaviour {
         Informacion.GetComponentInParent<UnityEngine.UI.Image>().color = new Color(1.0f - Informacion.color.r, 1.0f - Informacion.color.g, 1.0f - Informacion.color.b);
     }
 
-    public void mueveUnidad(GameObject casilla)
-    {
-        if (editMode)
-        {
-            GameObject gObj= Instantiate(prefabUnidad, mapa.transform);
-            gObj.transform.Translate(casilla.transform.localPosition);
-            GuardaUnidad(gObj);
-
-        }
-        else if (unidadActual != null)
-        {
-            if (unidadActual.GetComponent<PathFinder>().CalculatePath(casilla))
-            {
-                setCross(unidadActual, casilla);
-
-            }
-            camara.SetTarget(unidadActual.transform);
-            
-            unidadActual = null;
-        }
-    }
+    
     public void setCross(GameObject unidad,GameObject casilla) {
-        GameObject cross = Instantiate(prefabCross, casilla.transform.position, casilla.transform.localRotation, mapa.transform);
-        unidad.GetComponent<Agente>().setCross(ref cross);
+       
     }
 	public void updateDiagnostico(int numeroPasos)
     {
@@ -154,38 +130,60 @@ public class GameManager : MonoBehaviour {
         
     }
 
-    public void SetAgenteAleatorio()
+    public void ColocarObjeto(Vector2Int posicion)
     {
-        modoActual.text = "Agente Aleatorio";
-        prefabUnidad = agenteAleatorio;
-        reiniciaMapa();
+        if (colocar)
+        {
+            GameObject gObj = Instantiate(colocar, mapa.transform);
+            gObj.transform.Translate(posicion.x, posicion.y, 0);
+            if(colocar == prefabZombi)
+            {
+                zombies.Add(gObj);
+            }
+            if (colocar == prefabUnidad)
+            {
+                if (Heroe)
+                    Destroy(gObj);
+                else
+                    Heroe = gObj;
+            }
+            if (colocar == prefabRefugio)
+            {
+                if (Refugio)
+                    Destroy(gObj);
+                else
+                    Refugio = gObj;
+            }
+            if (colocar == prefabAliado)
+            {
+                listaUnidades.Add(gObj);
+                
+            }
+
+        }
     }
-    public void SetAgenteNormal()
+
+    public void EscogerHeroe()
     {
-        modoActual.text = "Agente Normal";
-        prefabUnidad = agenteNormal;
-        reiniciaMapa();
+        colocar = prefabUnidad;
 
     }
-    public void SetAgenteDespistado()
+
+    public void EscogerZombie()
     {
-        modoActual.text = "Agente Despistado";
-        prefabUnidad = agenteDespistado;
-        reiniciaMapa();
+        colocar = prefabZombi;
 
     }
-    public void SetAgenteCentrista()
+    public void EscogerAliado()
     {
-        modoActual.text = "Agente Centrista";
-        prefabUnidad = agenteCentrista;
-        reiniciaMapa();
+        colocar = prefabAliado;
 
     }
-    public void SetAgenteMediana()
+
+    public void EscogerRefugio()
     {
-        modoActual.text = "Agente Mediana";
-        prefabUnidad = agenteMediana;
-        reiniciaMapa();
+        colocar = prefabRefugio;
+
 
     }
 }
