@@ -8,28 +8,31 @@ public class PathFinder : MonoBehaviour
 {
 
     Mapa mapa;
-    Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
+    static Vector2Int[] directions = { new Vector2Int(-1, 0), new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
 	public Vector3 to;
     int[,] DistTo;
     Vector2Int[,] EdgeTo;
     Vector2Int UltimaCasilla;
     bool caminoPosible;
     private Priority_Queue.SimplePriorityQueue<Vector2Int, int> PQ = new Priority_Queue.SimplePriorityQueue<Vector2Int, int>();
+    public int hard;
     // Use this for initialization
     void Start()
     {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-        
-    }
-    // Update is called once per frame
-    void Update()
-    {
+        EdgeTo = new Vector2Int[mapa.altoMapa, mapa.anchoMapa];
 
     }
 
+    /// <summary>
+    /// Heuristics the specified a to b.
+    /// </summary>
+    /// <param name="a">The point a.</param>
+    /// <param name="b">The point b.</param>
+    /// <returns>the heuristic</returns>
     int heuristic(Vector2Int a, Vector2Int b)
     {
-        return 1*(System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y));
+        return hard*(System.Math.Abs(a.x - b.x) + System.Math.Abs(a.y - b.y));
     }
 
     void relax(Vector2Int origen, Vector2Int direccion)
@@ -53,16 +56,22 @@ public class PathFinder : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the path.
+    /// </summary>
+    /// <param name="to">To.</param>
+    /// <param name="from">From.</param>
+    /// <returns>an stack of the path to the tile</returns>
     Stack<Vector2Int> GetPath(ref Vector2Int to, ref Vector2Int from)
     {
         Stack<Vector2Int> queue = new Stack<Vector2Int>();
+
 
         queue.Push(to);
         while (to != from)
         {
             queue.Push(EdgeTo[to.y, to.x]);
             to = EdgeTo[to.y, to.x];
-
         }
 
 
@@ -70,6 +79,11 @@ public class PathFinder : MonoBehaviour
         return queue;
     }
 
+    /// <summary>
+    /// Calculates the path.
+    /// </summary>
+    /// <param name="g">The g.</param>
+    /// <returns>the path is possible</returns>
     public bool CalculatePath(GameObject g)
     {
         to = g.transform.localPosition;
@@ -83,7 +97,8 @@ public class PathFinder : MonoBehaviour
         {
             for (int j = 0; j < mapa.anchoMapa; j++)
             {
-                EdgeTo[i, j] = new Vector2Int(-1, -1);
+                EdgeTo[i, j].x = -1;
+                EdgeTo[i, j].y = -1;
             }
         }
         Vector2Int from = new Vector2Int((int)transform.localPosition.x, (int)transform.localPosition.y);
@@ -93,7 +108,6 @@ public class PathFinder : MonoBehaviour
 
 
         int k = 0;
-
         while (PQ.Count > 0 && !caminoPosible)
         {
             k++;
@@ -114,7 +128,7 @@ public class PathFinder : MonoBehaviour
         stopwatch.Stop();
         if (caminoPosible)
         {
-            GetComponent<Unidad>().setPath(GetPath(ref UltimaCasilla, ref from));
+            GetComponent<Unidad>().SetPath(GetPath(ref UltimaCasilla, ref from));
         }
         GameManager.instance.updateDiagnostico(caminoPosible);
 		GameManager.instance.updateDiagnostico(k,stopwatch.Elapsed.TotalMilliseconds,stopwatch.ElapsedTicks);

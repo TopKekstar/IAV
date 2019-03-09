@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour {
     public enum E_Tile:int
     {
-        CESPED = 0, RIO = 1, MURO = 2
+        CESPED = 0, RIO = 1, BARRO = 2,MURO = 3
     }
 
     E_Tile tipo;
@@ -59,6 +59,11 @@ public class Tile : MonoBehaviour {
                 coste = 2;
                 ocupada = false;
                 break;
+            case E_Tile.BARRO:
+                GetComponent<SpriteRenderer>().color = Color.yellow;
+                coste = 4;
+                ocupada = false;
+                break;
             case E_Tile.MURO:
                 GetComponent<SpriteRenderer>().color = Color.gray;
                 ocupada = true;
@@ -88,9 +93,12 @@ public class Tile : MonoBehaviour {
 			tipo = E_Tile.RIO;
 			break;
 		case E_Tile.RIO:
-			tipo = E_Tile.MURO;
+			tipo = E_Tile.BARRO;
 			break;
-		case E_Tile.MURO:
+        case E_Tile.BARRO:
+             tipo = E_Tile.MURO;
+             break;
+            case E_Tile.MURO:
 			tipo = E_Tile.CESPED;
 			break;
 		default:

@@ -35,9 +35,7 @@ public class Mapa : MonoBehaviour {
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-
                 mapaTiles[i, j].ini(Tile.E_Tile.CESPED, j, i);
-
             }
         }   
 
@@ -50,7 +48,7 @@ public class Mapa : MonoBehaviour {
         {
             for (int j = 0; j < anchoMapa; j++)
             {
-				int aletario =  Random.Range(-3, 3);
+				int aletario =  Random.Range(-3, 4);
 				if (aletario <= 0)
 					aletario = 0;
 				Tile.E_Tile tipoTile = (Tile.E_Tile)aletario;
@@ -59,7 +57,6 @@ public class Mapa : MonoBehaviour {
                     if (nMuros < nRocasMax)
                     {
                         nMuros++;
-
                     }
                     else
                     {

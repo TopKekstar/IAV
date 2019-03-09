@@ -8,54 +8,106 @@ public class Unidad : MonoBehaviour {
 	Vector2Int from;
     GameObject _cross;
     Vector2Int pos;
-    // Use this for initialization
+    TextMesh forceHeuristic;
+    PathFinder pathFinder;
+    LineRendererController line;
+    public GameObject linePrefab;
+    Color unitColor;
+
+
     void Start () {
         mapa = transform.parent.gameObject.GetComponent<Mapa>();
-        Color color = new Color(Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f));
-        GetComponent<SpriteRenderer>().color = color;
-		updatePos ();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-
+        unitColor = new Color(Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f), Random.Range(.0f, 1.0f));
+        GetComponent<SpriteRenderer>().color = unitColor;
+        pathFinder = GetComponent<PathFinder>();
+        forceHeuristic = GetComponentInChildren<TextMesh>();
+        changeHeuristic();
+		UpdatePos ();
+        
+        
     }
 
     private void OnMouseOver()
     {
-        if(Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
+        if (Input.GetMouseButtonDown(0) && !GameManager.instance.editMode)
+        {
             GameManager.instance.setCurrentUnit(gameObject);
+        }
         if (Input.GetMouseButtonDown(1) && GameManager.instance.editMode)
         {
-
             GameManager.instance.borraUnidad(gameObject);
-
+        }
+        if (Input.GetMouseButtonDown(0) && GameManager.instance.editMode)
+        {
+            changeHeuristic();
         }
     }
+
+    /// <summary>
+    /// Changes the heuristic.
+    /// </summary>
+    private void changeHeuristic()
+    {
+        pathFinder.hard++;
+        pathFinder.hard %= 11;
+        forceHeuristic.text = pathFinder.hard.ToString();
+
+    }
+    /// <summary>
+    /// Called when [destroy].
+    /// </summary>
     private void OnDestroy()
     {
         Destroy(_cross);
+        mapa.setOccupied(pos.y, pos.x, false);
     }
-    void updatePos()
+
+    /// <summary>
+    /// Updates the position.
+    /// </summary>
+    void UpdatePos()
     {
         pos.x = (int)transform.localPosition.x;
         pos.y = (int)transform.localPosition.y;
         mapa.setOccupied(pos.y, pos.x, true);
     }
-    public void setPath(Stack<Vector2Int> c)
-    {
+
+    /// <summary>
+    /// Sets the path.
+    /// </summary>
+    /// <param name="c">The stack of the path.</param>
+    public void SetPath(Stack<Vector2Int> c)
+    { 
+        line =  Instantiate(linePrefab, transform.parent).GetComponent<LineRendererController>();
+        line.SetPath(new Stack<Vector2Int>(c));
+        line.SetColorLine(unitColor);
         camino = c;
 		from = camino.Peek ();
         followPath();
-
     }
-    void moveTo(Vector3 v)
+
+    /// <summary>
+    /// Moves to v.
+    /// </summary>
+    /// <param name="v">The positiont.</param>
+    /// <param name="moveVel">The move vel.</param>
+    /// <returns></returns>
+    IEnumerator MoveTo(Vector3 v,float moveVel)
     {
-
         mapa.setOccupied((int)transform.localPosition.y, (int)transform.localPosition.x, false);
-        transform.Translate(v - transform.localPosition, transform);
-        updatePos();
+        while (Vector3.Distance(transform.position, v) > 0.001f) {
+            transform.position = Vector3.MoveTowards(transform.position, v,0.05f/moveVel);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.position = Vector3.MoveTowards(transform.position, v, moveVel);
+
+        UpdatePos();
+        followPath();
     }
+
+    /// <summary>
+    /// Follows the path.
+    /// </summary>
     public void followPath()
     {
         if (camino.Count > 0)
@@ -66,27 +118,28 @@ public class Unidad : MonoBehaviour {
 					vector = camino.Pop();
 				}
 				Destroy (_cross);
+                Destroy(line.gameObject);
 				GameManager.instance.setCurrentUnit (gameObject);
 				GameManager.instance.mueveUnidad(mapa.getTile(vector.y,vector.x).gameObject);
-			} 
-			else
+            }
+            else
 			{
-				
-				moveTo (new Vector3 (vector.x, vector.y, 0));
+                IEnumerator coroutine = MoveTo(new Vector3(vector.x, vector.y, 0), mapa.getCostOfTile(vector.y, vector.x));
+
+                StartCoroutine(coroutine);
 				if (camino.Count == 0) {
-					Destroy (_cross);
 					GameManager.instance.camara.ResetTarget ();
-				} else {
-					Invoke ("followPath", mapa.getCostOfTile (vector.y, vector.x));
 				}
 			}
+        }
+        else{
+            Destroy(_cross);
+            Destroy(line.gameObject);
         }
     }
     public void setCross(ref GameObject cross)
     {
         _cross = cross;
         _cross.GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color;
-    }
-
-    
+    }    
 }
